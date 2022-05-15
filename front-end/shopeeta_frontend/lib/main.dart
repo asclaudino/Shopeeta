@@ -25,7 +25,33 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: const Color.fromARGB(255, 194, 19, 101),
+        colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          primary: Color.fromARGB(255, 0, 224, 224),
+          onPrimary: Color.fromARGB(255, 172, 0, 172),
+          secondary: Color.fromARGB(255, 172, 0, 172),
+          onSecondary: Colors.white,
+          error: Colors.black,
+          onError: Colors.red,
+          background: Colors.purple,
+          onBackground: Colors.white,
+          surface: Colors.white54,
+          onSurface: Colors.black,
+        ),
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+            fontSize: 72.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontFamily: "OleoScriptSwashCaps",
+          ),
+          button: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.normal,
+            color: Colors.black,
+            fontFamily: "PlayFairDisplay",
+          ),
+        ),
       ),
       routes: _routes,
     );

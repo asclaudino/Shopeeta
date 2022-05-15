@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import '../models/user.dart';
 import './signin_page.dart';
+import '../widgets/welcome_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -49,71 +50,84 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: const Text("Login"),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            const Text("Bem vindo à página de Login!"),
-            if (!_successOnLogin)
-              const Text("O nome de usuário e senha devem estar corretos."),
-            Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.disabled,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: "Nome de usuário",
-                    ),
-                    validator: (String? userName) {
-                      if (userName == null || userName.isEmpty) {
-                        return "Preencha seu nome de usuário!";
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.name,
-                    onSaved: (userName) {
-                      if (userName != null) {
-                        _user.userName = userName;
-                      }
-                    },
-                    textInputAction: TextInputAction.next,
+      body: Row(
+        children: [
+          Container(
+            color: Theme.of(context).colorScheme.background,
+            width: MediaQuery.of(context).size.width / 2,
+            child: Column(
+              children: [
+                const Text("Bem vindo à página de Login!"),
+                if (!_successOnLogin)
+                  const Text("O nome de usuário e senha devem estar corretos."),
+                Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.disabled,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Nome de usuário",
+                        ),
+                        validator: (String? userName) {
+                          if (userName == null || userName.isEmpty) {
+                            return "Preencha seu nome de usuário!";
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.name,
+                        onSaved: (userName) {
+                          if (userName != null) {
+                            _user.userName = userName;
+                          }
+                        },
+                        textInputAction: TextInputAction.next,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Senha",
+                        ),
+                        obscureText: true,
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return "Preencha a senha!";
+                          }
+                          return null;
+                        },
+                        onSaved: (password) {
+                          if (password != null) {
+                            _user.password = password;
+                          }
+                        },
+                        textInputAction: TextInputAction.done,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          _saveForm();
+                        },
+                        child: const Text("Login"),
+                      ),
+                    ],
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: "Senha",
-                    ),
-                    obscureText: true,
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return "Preencha a senha!";
-                      }
-                      return null;
-                    },
-                    onSaved: (password) {
-                      if (password != null) {
-                        _user.password = password;
-                      }
-                    },
-                    textInputAction: TextInputAction.done,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      _saveForm();
-                    },
-                    child: const Text("Login"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(SigninPage.pageRouteName);
-                    },
-                    child: const Text("Ainda não tenho uma conta!"),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Container(
+            color: Colors.white54,
+            width: MediaQuery.of(context).size.width / 2,
+            child: Column(children: [
+              const Text("Novo por aqui?"),
+              WelcomeButton(
+                text: "Cadastrar-se",
+                onPressed: () {
+                  Navigator.of(context).pushNamed(SigninPage.pageRouteName);
+                },
+              )
+            ]),
+          ),
+        ],
       ),
     );
   }

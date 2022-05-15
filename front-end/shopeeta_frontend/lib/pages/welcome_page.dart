@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './login_page.dart';
+import '../widgets/welcome_button.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({
@@ -12,24 +13,50 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Bem vindo!',
+            Container(
+              color: Theme.of(context).colorScheme.background,
+              height: MediaQuery.of(context).size.height * 0.7,
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Shopeeta,\nO comércio virtual do H8.',
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 8.0,
+                            right: 8.0,
+                            left: 8.0,
+                          ),
+                          child: WelcomeButton(
+                            text: 'Entrar',
+                            onPressed: () => Navigator.of(context)
+                                .pushNamed(LoginPage.pageRouteName),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 120,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
-            TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    LoginPage.pageRouteName,
-                  );
-                },
-                child: const Text('Login')),
           ],
         ),
       ),
