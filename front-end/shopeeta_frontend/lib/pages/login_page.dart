@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopeeta_frontend/pages/home_page.dart';
 import 'dart:convert';
 
 import '../models/user.dart';
+import './signin_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,31 +16,30 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  User user = User(email: "", password: "", userName: "");
-  var _userNameIsValid = true;
+  final User _user = User(email: "", password: "", userName: "");
+  var _successOnLogin = true;
 
   void _saveForm() {
     final form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
       http
-          .post(Uri.parse('http://localhost:8000/userbase/register/'),
+          .post(Uri.parse('http://localhost:8000/userbase/login/'),
               body:
-                  '{"username": "${user.userName}", "password": "${user.password}", "email": "${user.email}"}')
+                  '{"username": "${_user.userName}", "password": "${_user.password}"}')
           .then((response) {
-        print(response.body);
+        if (json.decode(response.body)["status"] == "success") {
+          Navigator.of(context)
+              .pushReplacementNamed(HomePage.pageRouteName, arguments: {
+            "userName": _user.userName,
+            "password": _user.password,
+          });
+        } else {
+          setState(() {
+            _successOnLogin = false;
+          });
+        }
       });
-    }
-  }
-
-  void _verifyUserName(String userName) async {
-    var response = await http.post(
-        Uri.parse('http://localhost:8000/userbase/verify_username/'),
-        body: '{"username": "$userName"}');
-    if (json.decode(response.body)["status"] == "success") {
-      _userNameIsValid = true;
-    } else {
-      _userNameIsValid = false;
     }
   }
 
@@ -52,9 +53,11 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: [
             const Text("Bem vindo à página de Login!"),
+            if (!_successOnLogin)
+              const Text("O nome de usuário e senha devem estar corretos."),
             Form(
               key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+              autovalidateMode: AutovalidateMode.disabled,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -64,68 +67,47 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     validator: (String? userName) {
                       if (userName == null || userName.isEmpty) {
-                        return "Nome de usuário não pode ser vazio";
-                      }
-                      if (!_userNameIsValid) {
-                        return "Esse nome de usuário já existe";
+                        return "Preencha seu nome de usuário!";
                       }
                       return null;
-                    },
-                    onChanged: (userName) => {
-                      setState(
-                        () {
-                          _verifyUserName(userName);
-                        },
-                      )
                     },
                     keyboardType: TextInputType.name,
                     onSaved: (userName) {
                       if (userName != null) {
-                        user.userName = userName;
+                        _user.userName = userName;
                       }
                     },
+                    textInputAction: TextInputAction.next,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
-                      labelText: "E-mail",
-                    ),
-                    validator: (String? value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          !value.contains("@")) {
-                        return "Digite um e-mail válido";
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    onSaved: (email) {
-                      if (email != null) {
-                        user.email = email;
-                      }
-                    },
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: "Escolha uma senha",
+                      labelText: "Senha",
                     ),
                     obscureText: true,
                     validator: (String? value) {
-                      if (value == null || value.length < 6) {
-                        return "A senha deve ter pelo menos 6 caracteres";
+                      if (value == null || value.isEmpty) {
+                        return "Preencha a senha!";
                       }
                       return null;
                     },
                     onSaved: (password) {
                       if (password != null) {
-                        user.password = password;
+                        _user.password = password;
                       }
                     },
+                    textInputAction: TextInputAction.done,
                   ),
                   TextButton(
                     onPressed: () {
                       _saveForm();
                     },
                     child: const Text("Login"),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(SigninPage.pageRouteName);
+                    },
+                    child: const Text("Ainda não tenho uma conta!"),
                   ),
                 ],
               ),

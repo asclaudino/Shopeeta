@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shopeeta_frontend/pages/home_page.dart';
 
 import 'pages/welcome_page.dart';
 import 'pages/login_page.dart';
+import 'pages/signin_page.dart';
+import 'pages/home_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +15,9 @@ class MyApp extends StatelessWidget {
 
   final _routes = <String, WidgetBuilder>{
     '/': (BuildContext context) => const WelcomePage(title: 'Shopeeta'),
-    '/login': (BuildContext context) => const LoginPage(),
+    LoginPage.pageRouteName: (BuildContext context) => const LoginPage(),
+    SigninPage.pageRouteName: (BuildContext context) => const SigninPage(),
+    HomePage.pageRouteName: (BuildContext context) => const HomePage(),
   };
 
   @override
