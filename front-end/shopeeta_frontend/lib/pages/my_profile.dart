@@ -75,7 +75,13 @@ class _MyProfileState extends State<MyProfile> {
                         },
                       ),
                     ),
-                  )
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      _searchProducts();
+                    },
+                  ),
                 ],
               ),
             ),

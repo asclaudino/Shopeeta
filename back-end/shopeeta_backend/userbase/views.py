@@ -68,8 +68,8 @@ def login_user(request):
         body = json.loads(json_acceptable_string)
         username = body.get('username')
         password = body.get('password')
-        user = User.objects.filter(username=username, password=password)
-        if user:
+        
+        if check_user_validity(username, password):
             request.session['username'] = username
             request.session['password'] = password
             return JsonResponse({'status': 'success'})
@@ -86,10 +86,18 @@ def verify_session(request):
         body = json.loads(json_acceptable_string)
         username = body.get('username')
         password = body.get('password')
-        user = User.objects.filter(username=username, password=password)
-        if user:
+        
+        if check_user_validity(username, password):
             return JsonResponse({'status': 'success'})
         else:
             return JsonResponse({'status': 'fail'})
     else:
         return JsonResponse({'status': 'fail'})
+
+
+def check_user_validity(username, password):
+    user = User.objects.filter(username=username, password=password)
+    if user:
+        return True
+    else:
+        return False

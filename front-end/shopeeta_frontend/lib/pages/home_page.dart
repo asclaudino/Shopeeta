@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './login_page.dart';
+import '../models/product.dart';
+import '../widgets/product_grid_tile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,11 +16,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool logedIn = false;
+  bool _logedIn = false;
   String userName = "";
   String password = "";
   final _searchBarHeight = 50.0;
+  final _sideBarWidth = 200.0;
   String _toBeSearched = "";
+  var _loadedProducts = false;
+  List<Product> _products = [];
 
   void _verifyIfIsLogedIn() async {
     var response = await http.post(
@@ -26,7 +31,21 @@ class _HomePageState extends State<HomePage> {
         body: '{"username": "$userName", "password": "$password"}');
     if (json.decode(response.body)["status"] == "success") {
       setState(() {
-        logedIn = true;
+        _logedIn = true;
+      });
+    }
+  }
+
+  void _getLatestProducts() async {
+    var response = await http.get(
+      Uri.parse('http://localhost:8000/shop/get_latest_products/'),
+    );
+    if (json.decode(response.body)["status"] == "success") {
+      setState(() {
+        _products = (json.decode(response.body)["products"] as List)
+            .map((i) => Product.fromJson(i))
+            .toList();
+        _loadedProducts = true;
       });
     }
   }
@@ -44,10 +63,11 @@ class _HomePageState extends State<HomePage> {
     prefs.then((prefs) {
       userName = prefs.getString('userName')!;
       password = prefs.getString('password')!;
-      _verifyIfIsLogedIn();
+      if (!_logedIn) _verifyIfIsLogedIn();
     });
 
-    if (logedIn) {
+    if (_logedIn) {
+      if (!_loadedProducts) _getLatestProducts();
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Column(
@@ -75,40 +95,56 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                  )
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      _searchProducts();
+                    },
+                  ),
                 ],
               ),
             ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 150,
-                  height: MediaQuery.of(context).size.height - _searchBarHeight,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text('Filtros'),
-                      Text('Você está logado!'),
-                    ],
+            IntrinsicHeight(
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: _sideBarWidth,
+                    height:
+                        MediaQuery.of(context).size.height - _searchBarHeight,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Text('Filtros'),
+                        Text('Você está logado!'),
+                      ],
+                    ),
                   ),
-                ),
-                const VerticalDivider(
-                  indent: 10,
-                  endIndent: 10,
-                  width: 10,
-                  thickness: 0,
-                  color: Colors.black54,
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text('Resultados'),
-                      Text('Você está logado!'),
-                    ],
+                  const VerticalDivider(
+                    indent: 10,
+                    endIndent: 10,
+                    width: 10,
+                    thickness: 0,
+                    color: Colors.black54,
                   ),
-                ),
-              ],
+                  Container(
+                    padding: const EdgeInsets.all(30),
+                    width:
+                        MediaQuery.of(context).size.width - _sideBarWidth - 10,
+                    height:
+                        MediaQuery.of(context).size.height - _searchBarHeight,
+                    child: SingleChildScrollView(
+                      child: Wrap(
+                        children: _products.map((product) {
+                          return ProductGridTile(
+                            product: product,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
