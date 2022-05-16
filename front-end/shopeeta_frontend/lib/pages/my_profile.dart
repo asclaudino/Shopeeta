@@ -5,15 +5,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import './login_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-  static const pageRouteName = "/home";
+class MyProfile extends StatefulWidget {
+  const MyProfile({super.key});
+  static const pageRouteName = "/my_profile";
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MyProfile> createState() => _MyProfileState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MyProfileState extends State<MyProfile> {
   bool logedIn = false;
   String userName = "";
   String password = "";

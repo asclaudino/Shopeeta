@@ -69,135 +69,192 @@ class _SigninPageState extends State<SigninPage> {
       appBar: AppBar(
         title: const Text("Signin"),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            const Text("Bem vindo à página de cadastro!"),
-            Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.disabled,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (_errorOnCreate)
-                    const Text(
-                        "Ops... algo deu errado! Tente novamente por favor!"),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: "Nome de usuário",
-                    ),
-                    validator: (String? userName) {
-                      if (userName == null || userName.isEmpty) {
-                        return "Nome de usuário não pode ser vazio";
-                      }
-                      if (!_userNameIsValid) {
-                        return "Esse nome de usuário já existe";
-                      }
-                      return null;
-                    },
-                    onChanged: (userName) => {
-                      setState(
-                        () {
-                          _verifyUserName(userName);
-                        },
-                      )
-                    },
-                    keyboardType: TextInputType.name,
-                    onSaved: (userName) {
-                      if (userName != null) {
-                        user.userName = userName;
-                      }
-                    },
-                    textInputAction: TextInputAction.next,
+      body: ListView(
+        children: [
+          const SizedBox(height: 20),
+          Center(
+            child: Container(
+              width: 400,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 3,
+                    spreadRadius: 3,
+                    color: Colors.black.withOpacity(0.3),
+                    offset: const Offset(0, 0),
                   ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: "E-mail",
-                    ),
-                    validator: (String? value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          !value.contains("@")) {
-                        return "Digite um e-mail válido";
-                      }
-                      if (!_emailIsValid) {
-                        return "Esse e-mail já está cadastrado!";
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _verifyEmailAddress(value);
-                      });
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    onSaved: (email) {
-                      if (email != null) {
-                        user.email = email;
-                      }
-                    },
-                    textInputAction: TextInputAction.next,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: "Escolha uma senha",
-                    ),
-                    obscureText: true,
-                    validator: (String? value) {
-                      if (value == null || value.length < 6) {
-                        return "A senha deve ter pelo menos 6 caracteres";
-                      }
-                      return null;
-                    },
-                    onSaved: (password) {
-                      if (password != null) {
-                        user.password = password;
-                      }
-                    },
-                    textInputAction: TextInputAction.next,
-                    onChanged: (value) {
-                      setState(() {
-                        user.password = value;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: "Escreva a senha novamente",
-                    ),
-                    obscureText: true,
-                    validator: (String? value) {
-                      if (value != user.password) {
-                        return "As senhas não coincidem";
-                      }
-                      if (value == null || value.length < 6) {
-                        return "A senha deve ter pelo menos 6 caracteres";
-                      }
-                      return null;
-                    },
-                    textInputAction: TextInputAction.done,
-                  ),
-                  if (!_accountCreated)
-                    TextButton(
-                      onPressed: () {
-                        _saveForm();
-                      },
-                      child: const Text("Cadastrar!"),
-                    ),
-                  if (_accountCreated) const Text("Conta criada com sucesso!"),
-                  if (_accountCreated)
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(LoginPage.pageRouteName);
-                      },
-                      child: const Text("Fazer login!"),
-                    ),
                 ],
               ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Shopeeta",
+                      style: Theme.of(context).textTheme.headline1!.copyWith(
+                          color: Theme.of(context).colorScheme.primary),
+                    ),
+                    Text(
+                      "Página de cadastro",
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.disabled,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (_errorOnCreate)
+                            const Text(
+                                "Ops... algo deu errado! Tente novamente por favor!"),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: "Nome de usuário",
+                            ),
+                            validator: (String? userName) {
+                              if (userName == null || userName.isEmpty) {
+                                return "Nome de usuário não pode ser vazio";
+                              }
+                              if (!_userNameIsValid) {
+                                return "Esse nome de usuário já existe";
+                              }
+                              return null;
+                            },
+                            onChanged: (userName) => {
+                              setState(
+                                () {
+                                  _verifyUserName(userName);
+                                },
+                              )
+                            },
+                            keyboardType: TextInputType.name,
+                            onSaved: (userName) {
+                              if (userName != null) {
+                                user.userName = userName;
+                              }
+                            },
+                            textInputAction: TextInputAction.next,
+                          ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: "E-mail",
+                            ),
+                            validator: (String? value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  !value.contains("@")) {
+                                return "Digite um e-mail válido";
+                              }
+                              if (!_emailIsValid) {
+                                return "Esse e-mail já está cadastrado!";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _verifyEmailAddress(value);
+                              });
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                            onSaved: (email) {
+                              if (email != null) {
+                                user.email = email;
+                              }
+                            },
+                            textInputAction: TextInputAction.next,
+                          ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: "Escolha uma senha",
+                            ),
+                            obscureText: true,
+                            validator: (String? value) {
+                              if (value == null || value.length < 6) {
+                                return "A senha deve ter pelo menos 6 caracteres";
+                              }
+                              return null;
+                            },
+                            onSaved: (password) {
+                              if (password != null) {
+                                user.password = password;
+                              }
+                            },
+                            textInputAction: TextInputAction.next,
+                            onChanged: (value) {
+                              setState(() {
+                                user.password = value;
+                              });
+                            },
+                          ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: "Escreva a senha novamente",
+                            ),
+                            obscureText: true,
+                            validator: (String? value) {
+                              if (value != user.password) {
+                                return "As senhas não coincidem";
+                              }
+                              if (value == null || value.length < 6) {
+                                return "A senha deve ter pelo menos 6 caracteres";
+                              }
+                              return null;
+                            },
+                            textInputAction: TextInputAction.done,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    if (!_accountCreated)
+                      TextButton(
+                        onPressed: () {
+                          _saveForm();
+                        },
+                        child: Text(
+                          "Cadastrar!",
+                          style: Theme.of(context).textTheme.button!.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                        ),
+                      ),
+                    if (_accountCreated)
+                      Text(
+                        "Conta criada com sucesso!",
+                        style: Theme.of(context).textTheme.bodyText1!,
+                      ),
+                    if (_accountCreated)
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    if (_accountCreated)
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(LoginPage.pageRouteName);
+                        },
+                        child: Text(
+                          "Fazer login!",
+                          style: Theme.of(context).textTheme.button!.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
