@@ -50,15 +50,24 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _searchProducts() async {
+  void _searchProducts(GlobalKey<FormState> form) async {
     var response = await http.post(
-        Uri.parse('http://localhost:8000/productbase/search/'),
-        body: '{"search": "$_toBeSearched"}');
-    if (json.decode(response.body)["status"] == "success") {}
+        Uri.parse('http://localhost:8000/shop/search_products/'),
+        body: '{"name": "$_toBeSearched"}');
+    if (json.decode(response.body)["status"] == "success") {
+      setState(() {
+        _products = (json.decode(response.body)["products"] as List)
+            .map((i) => Product.fromJson(i))
+            .toList();
+        form.currentState?.reset();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final form = GlobalKey<FormState>();
+
     var prefs = SharedPreferences.getInstance();
     prefs.then((prefs) {
       userName = prefs.getString('userName')!;
@@ -77,15 +86,28 @@ class _HomePageState extends State<HomePage> {
               height: _searchBarHeight,
               color: Theme.of(context).colorScheme.primary,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    'Olá, $userName!, aqui fica a barra de pesquisa',
-                    style: const TextStyle(fontSize: 30),
+                  SizedBox(
+                    width: _sideBarWidth,
+                    child: TextButton(
+                      child: Text(
+                        'Shopeeta',
+                        style: Theme.of(context).textTheme.headline1!.copyWith(
+                              fontSize: 26,
+                            ),
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, HomePage.pageRouteName);
+                      },
+                    ),
                   ),
                   SizedBox(
-                    width: 200,
+                    width: MediaQuery.of(context).size.width / 2,
                     child: Form(
+                      key: form,
                       child: TextFormField(
                         decoration: const InputDecoration(
                           hintText: 'Pesquisar',
@@ -93,13 +115,29 @@ class _HomePageState extends State<HomePage> {
                         onChanged: (value) {
                           _toBeSearched = value;
                         },
+                        onFieldSubmitted: (value) {
+                          _searchProducts(form);
+                        },
                       ),
                     ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.search),
                     onPressed: () {
-                      _searchProducts();
+                      _searchProducts(form);
+                    },
+                  ),
+                  Expanded(child: Container()),
+                  IconButton(
+                    icon: const Icon(Icons.shopping_cart),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/cart');
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.account_circle_rounded),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/cart');
                     },
                   ),
                 ],
