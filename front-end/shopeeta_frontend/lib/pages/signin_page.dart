@@ -207,6 +207,9 @@ class _SigninPageState extends State<SigninPage> {
                               return null;
                             },
                             textInputAction: TextInputAction.done,
+                            onFieldSubmitted: (value) {
+                              _saveForm();
+                            },
                           ),
                         ],
                       ),

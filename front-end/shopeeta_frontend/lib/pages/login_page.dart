@@ -139,6 +139,9 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               },
                               textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (value) {
+                                _saveForm();
+                              },
                             ),
                             const SizedBox(
                               height: 30,

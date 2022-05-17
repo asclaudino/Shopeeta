@@ -115,3 +115,27 @@ def search_products_by_name(request):
         return JsonResponse({'status': 'success', 'products': products_list})
 
     return JsonResponse({'status': 'fail'})
+
+
+@csrf_exempt
+def search_products_by_seller(request):
+    if request.method == 'POST':
+        s = request.body.decode('utf-8')
+        json_acceptable_string = s.replace("'", "\"")
+        body = json.loads(json_acceptable_string)
+        seller = body.get('seller')
+
+        products = Product.objects.filter(seller__username=seller)
+        products_list = []
+        for product in products:
+            product_dict = {
+                'id': product.id,
+                'name': product.name,
+                'description': product.description,
+                'price': product.price,
+                'seller': product.seller.username
+            }
+            products_list.append(product_dict)
+        return JsonResponse({'status': 'success', 'products': products_list})
+
+    return JsonResponse({'status': 'fail'})

@@ -5,6 +5,7 @@ import 'pages/welcome_page.dart';
 import 'pages/login_page.dart';
 import 'pages/signin_page.dart';
 import 'pages/home_page.dart';
+import 'pages/my_profile_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,6 +19,8 @@ class MyApp extends StatelessWidget {
     LoginPage.pageRouteName: (BuildContext context) => const LoginPage(),
     SigninPage.pageRouteName: (BuildContext context) => const SigninPage(),
     HomePage.pageRouteName: (BuildContext context) => const HomePage(),
+    MyProfilePage.pageRouteName: (BuildContext context) =>
+        const MyProfilePage(),
   };
 
   @override

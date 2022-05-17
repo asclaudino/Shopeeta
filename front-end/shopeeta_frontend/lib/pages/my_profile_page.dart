@@ -4,19 +4,19 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './wait_for_connection_page.dart';
+import './home_page.dart';
 import '../models/product.dart';
 import '../widgets/product_grid_tile.dart';
-import './my_profile_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-  static const pageRouteName = "/home";
+class MyProfilePage extends StatefulWidget {
+  const MyProfilePage({super.key});
+  static const pageRouteName = "/my_profile";
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MyProfilePage> createState() => _MyProfilePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MyProfilePageState extends State<MyProfilePage> {
   bool _logedIn = false;
   String userName = "";
   String password = "";
@@ -37,9 +37,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _getLatestProducts() async {
-    var response = await http.get(
-      Uri.parse('http://localhost:8000/shop/get_latest_products/'),
+  void _getMyProducts() async {
+    var response = await http.post(
+      Uri.parse('http://localhost:8000/shop/get_sellers_products/'),
+      body: '{"seller": "$userName"}',
     );
     if (json.decode(response.body)["status"] == "success") {
       setState(() {
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> {
       if (!_logedIn) _verifyIfIsLogedIn();
     });
     if (!_logedIn) return const WaitForConnectionPage();
-    if (!_loadedProducts) _getLatestProducts();
+    if (!_loadedProducts) _getMyProducts();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
