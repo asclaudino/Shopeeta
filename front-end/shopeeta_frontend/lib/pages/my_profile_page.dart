@@ -5,8 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import './wait_for_connection_page.dart';
 import './home_page.dart';
+import './register_product_page.dart';
 import '../models/product.dart';
-import '../widgets/product_grid_tile.dart';
+import '../widgets/my_product_grid_tile.dart';
+import '../widgets/my_alert_dialog.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -63,6 +65,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
             .toList();
         form.currentState?.reset();
       });
+    }
+  }
+
+  void _deleteProduct(Product product) async {
+    var response = await http.post(
+        Uri.parse('http://localhost:8000/shop/delete_product/'),
+        body:
+            '{"product_id": "${product.id}", "username": "$userName", "password": "$password"}');
+    if (json.decode(response.body)["status"] == "success") {
+      _getMyProducts();
     }
   }
 
@@ -153,9 +165,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   height: MediaQuery.of(context).size.height - _searchBarHeight,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text('Filtros'),
-                      Text('Você está logado!'),
+                    children: [
+                      const Text('Filtros'),
+                      const Text('Você está logado!'),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, RegisterProductPage.pageRouteName);
+                        },
+                        child: const Text("Adicionar Produto"),
+                      ),
                     ],
                   ),
                 ),
@@ -173,8 +192,24 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   child: SingleChildScrollView(
                     child: Wrap(
                       children: _products.map((product) {
-                        return ProductGridTile(
+                        return MyProductGridTile(
                           product: product,
+                          deleteProduct: () {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (_) => MyAlertDialog(
+                                text:
+                                    "Tem certeza de que quer deletar seu produto? Esta ação não pode ser desfeita.",
+                                title: "Deletar produto?",
+                                onConfirmText: "Deletar",
+                                onConfirm: () {
+                                  _deleteProduct(product);
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            );
+                          },
                         );
                       }).toList(),
                     ),

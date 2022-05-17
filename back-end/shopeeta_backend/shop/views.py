@@ -1,3 +1,4 @@
+from math import prod
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .models import Product
@@ -17,11 +18,12 @@ def register_product(request):
         name = body.get('name')
         description = body.get('description')
         price = body.get('price')
-        seller = body.get('username')
+        seller_username = body.get('username')
         password = body.get('password')
-        if not check_user_validity(seller, password):
+        if not check_user_validity(seller_username, password):
             return JsonResponse({'status': 'fail', 'message': 'Usuário ou senha inválidos!'})
 
+        seller = User.objects.get(username=seller_username)
         product = Product(name=name, description=description,
                           price=price, seller=seller)
         product.save()
@@ -61,7 +63,7 @@ def delete_product(request):
         s = request.body.decode('utf-8')
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
-        id = body.get('id')
+        id = body.get('product_id')
         username = body.get('username')
         password = body.get('password')
         if not check_user_validity(username, password):
@@ -135,6 +137,7 @@ def search_products_by_seller(request):
                 'price': product.price,
                 'seller': product.seller.username
             }
+            print(type(product.id))
             products_list.append(product_dict)
         return JsonResponse({'status': 'success', 'products': products_list})
 
