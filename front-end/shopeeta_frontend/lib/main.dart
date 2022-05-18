@@ -7,6 +7,7 @@ import 'pages/signin_page.dart';
 import 'pages/home_page.dart';
 import 'pages/my_profile_page.dart';
 import 'pages/register_product_page.dart';
+import 'pages/wait_for_connection_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,6 +18,8 @@ class MyApp extends StatelessWidget {
 
   final _routes = <String, WidgetBuilder>{
     '/': (BuildContext context) => const WelcomePage(title: 'Shopeeta'),
+    WaitForConnectionPage.pageRouteName: (BuildContext context) =>
+        const WaitForConnectionPage(),
     LoginPage.pageRouteName: (BuildContext context) => const LoginPage(),
     SigninPage.pageRouteName: (BuildContext context) => const SigninPage(),
     HomePage.pageRouteName: (BuildContext context) => const HomePage(),
