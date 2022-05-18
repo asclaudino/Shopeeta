@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import './wait_for_connection_page.dart';
 import '../models/product.dart';
+import '../models/filter.dart';
 import '../widgets/product_grid_tile.dart';
 import '../widgets/home_side_bar.dart';
 import './my_profile_page.dart';
@@ -25,6 +26,11 @@ class _HomePageState extends State<HomePage> {
   String _toBeSearched = "";
   var _loadedProducts = false;
   List<Product> _products = [];
+  final List<Filter> _filters = [
+    Filter(name: "Iniciativa", isSelected: false),
+    Filter(name: "Comida", isSelected: false),
+    Filter(name: "Roupa", isSelected: false),
+  ];
 
   void _verifyIfIsLogedIn() async {
     var connected =
@@ -54,6 +60,12 @@ class _HomePageState extends State<HomePage> {
         form.currentState?.reset();
       });
     }
+  }
+
+  void _changeFilterState(Filter filter, bool newState) {
+    setState(() {
+      filter.isSelected = newState;
+    });
   }
 
   @override
@@ -141,6 +153,8 @@ class _HomePageState extends State<HomePage> {
                 HomeSideBar(
                   sideBarWidth: _sideBarWidth,
                   searchBarHeight: _searchBarHeight,
+                  filters: _filters,
+                  changeFilterState: _changeFilterState,
                 ),
                 const VerticalDivider(
                   indent: 10,
