@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shopeeta_frontend/pages/login_page.dart';
-import 'dart:convert';
 
 import '../models/user.dart';
+import '../helpers/http_requests.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -25,12 +24,9 @@ class _SigninPageState extends State<SigninPage> {
     final form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
-      var response = await http.post(
-          Uri.parse('http://localhost:8000/userbase/register/'),
-          body:
-              '{"username": "${user.userName}", "password": "${user.password}", "email": "${user.email}"}');
+      var response = await UserHttpRequestHelper.registerUser(user);
 
-      if (json.decode(response.body)["status"] == "success") {
+      if (response) {
         setState(() {
           _accountCreated = true;
           _errorOnCreate = false;
@@ -42,25 +38,11 @@ class _SigninPageState extends State<SigninPage> {
   }
 
   void _verifyUserName(String userName) async {
-    var response = await http.post(
-        Uri.parse('http://localhost:8000/userbase/verify_username/'),
-        body: '{"username": "$userName"}');
-    if (json.decode(response.body)["status"] == "success") {
-      _userNameIsValid = true;
-    } else {
-      _userNameIsValid = false;
-    }
+    _userNameIsValid = await UserHttpRequestHelper.verifyUserName(userName);
   }
 
   void _verifyEmailAddress(String email) async {
-    var response = await http.post(
-        Uri.parse('http://localhost:8000/userbase/verify_email/'),
-        body: '{"email": "$email"}');
-    if (json.decode(response.body)["status"] == "success") {
-      _emailIsValid = true;
-    } else {
-      _emailIsValid = false;
-    }
+    _emailIsValid = await UserHttpRequestHelper.verifyEmailAddress(email);
   }
 
   @override

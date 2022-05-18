@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shopeeta_frontend/pages/home_page.dart';
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
+import '../helpers/http_requests.dart';
 import './signin_page.dart';
 import '../widgets/welcome_button.dart';
 
@@ -25,12 +24,9 @@ class _LoginPageState extends State<LoginPage> {
     final form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
-      http
-          .post(Uri.parse('http://localhost:8000/userbase/login/'),
-              body:
-                  '{"username": "${_user.userName}", "password": "${_user.password}"}')
+      UserHttpRequestHelper.verifyIfIsLogedIn(_user.userName, _user.password)
           .then((response) {
-        if (json.decode(response.body)["status"] == "success") {
+        if (response) {
           var prefs = SharedPreferences.getInstance();
           prefs.then((prefs) {
             prefs.setString('userName', _user.userName);

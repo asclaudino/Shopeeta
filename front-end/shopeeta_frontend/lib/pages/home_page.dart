@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './wait_for_connection_page.dart';
@@ -8,6 +6,7 @@ import '../models/product.dart';
 import '../widgets/product_grid_tile.dart';
 import '../widgets/home_side_bar.dart';
 import './my_profile_page.dart';
+import '../helpers/http_requests.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,10 +27,9 @@ class _HomePageState extends State<HomePage> {
   List<Product> _products = [];
 
   void _verifyIfIsLogedIn() async {
-    var response = await http.post(
-        Uri.parse('http://localhost:8000/userbase/login/'),
-        body: '{"username": "$userName", "password": "$password"}');
-    if (json.decode(response.body)["status"] == "success") {
+    var connected =
+        await UserHttpRequestHelper.verifyIfIsLogedIn(userName, password);
+    if (connected) {
       setState(() {
         _logedIn = true;
       });
@@ -39,28 +37,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _getLatestProducts() async {
-    var response = await http.get(
-      Uri.parse('http://localhost:8000/shop/get_latest_products/'),
-    );
-    if (json.decode(response.body)["status"] == "success") {
+    var response = await ShopHttpRequestHelper.getLatestProducts();
+    if (response.success) {
       setState(() {
-        _products = (json.decode(response.body)["products"] as List)
-            .map((i) => Product.fromJson(i))
-            .toList();
+        _products = response.content;
         _loadedProducts = true;
       });
     }
   }
 
   void _searchProducts(GlobalKey<FormState> form) async {
-    var response = await http.post(
-        Uri.parse('http://localhost:8000/shop/search_products/'),
-        body: '{"name": "$_toBeSearched"}');
-    if (json.decode(response.body)["status"] == "success") {
+    var response = await ShopHttpRequestHelper.searchProducts(_toBeSearched);
+    if (response.success) {
       setState(() {
-        _products = (json.decode(response.body)["products"] as List)
-            .map((i) => Product.fromJson(i))
-            .toList();
+        _products = response.content;
         form.currentState?.reset();
       });
     }

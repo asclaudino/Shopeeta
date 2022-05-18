@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './wait_for_connection_page.dart';
 import './home_page.dart';
 import './register_product_page.dart';
 import '../models/product.dart';
-import '../widgets/my_product_grid_tile.dart';
 import '../widgets/my_alert_dialog.dart';
+import '../widgets/my_product_grid_tile.dart';
+import '../helpers/http_requests.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -29,10 +28,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
   List<Product> _products = [];
 
   void _verifyIfIsLogedIn() async {
-    var response = await http.post(
-        Uri.parse('http://localhost:8000/userbase/login/'),
-        body: '{"username": "$userName", "password": "$password"}');
-    if (json.decode(response.body)["status"] == "success") {
+    var response =
+        await UserHttpRequestHelper.verifyIfIsLogedIn(userName, password);
+    if (response) {
       setState(() {
         _logedIn = true;
       });
@@ -40,40 +38,31 @@ class _MyProfilePageState extends State<MyProfilePage> {
   }
 
   void _getMyProducts() async {
-    var response = await http.post(
-      Uri.parse('http://localhost:8000/shop/get_sellers_products/'),
-      body: '{"seller": "$userName"}',
-    );
-    if (json.decode(response.body)["status"] == "success") {
+    var response =
+        await ShopHttpRequestHelper.getMyProducts(userName, password);
+
+    if (response.success) {
       setState(() {
-        _products = (json.decode(response.body)["products"] as List)
-            .map((i) => Product.fromJson(i))
-            .toList();
+        _products = response.content;
         _loadedProducts = true;
       });
     }
   }
 
   void _searchProducts(GlobalKey<FormState> form) async {
-    var response = await http.post(
-        Uri.parse('http://localhost:8000/shop/search_products/'),
-        body: '{"name": "$_toBeSearched"}');
-    if (json.decode(response.body)["status"] == "success") {
+    var response = await ShopHttpRequestHelper.searchProducts(_toBeSearched);
+    if (response.success) {
       setState(() {
-        _products = (json.decode(response.body)["products"] as List)
-            .map((i) => Product.fromJson(i))
-            .toList();
+        _products = response.content;
         form.currentState?.reset();
       });
     }
   }
 
   void _deleteProduct(Product product) async {
-    var response = await http.post(
-        Uri.parse('http://localhost:8000/shop/delete_product/'),
-        body:
-            '{"product_id": "${product.id}", "username": "$userName", "password": "$password"}');
-    if (json.decode(response.body)["status"] == "success") {
+    var wasDeleted =
+        await ShopHttpRequestHelper.deleteProduct(product, userName, password);
+    if (wasDeleted) {
       _getMyProducts();
     }
   }

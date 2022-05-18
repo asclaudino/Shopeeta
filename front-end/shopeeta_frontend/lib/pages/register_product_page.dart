@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shopeeta_frontend/helpers/http_requests.dart';
+import 'package:shopeeta_frontend/models/product.dart';
 import 'package:shopeeta_frontend/pages/my_profile_page.dart';
 
 import './wait_for_connection_page.dart';
@@ -33,11 +33,18 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
     final form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
-      var response = await http.post(
-          Uri.parse('http://localhost:8000/shop/register_product/'),
-          body:
-              '{"username": "$userName", "password": "$password", "name": "$name", "description": "$description", "price": $price}');
-      if (json.decode(response.body)["status"] == "success") {
+      var response = await ShopHttpRequestHelper.addProduct(
+        Product(
+          name: name,
+          description: description,
+          price: price,
+          seller: name,
+          id: -1, // id will be set by the server
+        ),
+        userName,
+        password,
+      );
+      if (response.success) {
         setState(() {
           _productAdded = true;
           _errorOnAdd = false;
@@ -46,17 +53,16 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
         setState(() {
           _errorOnAdd = true;
           _productAdded = false;
-          _errorOnAddMessage = json.decode(response.body)["message"];
+          _errorOnAddMessage = response.errorMessage;
         });
       }
     }
   }
 
   void _verifyIfIsLogedIn() async {
-    var response = await http.post(
-        Uri.parse('http://localhost:8000/userbase/login/'),
-        body: '{"username": "$userName", "password": "$password"}');
-    if (json.decode(response.body)["status"] == "success") {
+    var response =
+        await UserHttpRequestHelper.verifyIfIsLogedIn(userName, password);
+    if (response) {
       setState(() {
         _logedIn = true;
       });
