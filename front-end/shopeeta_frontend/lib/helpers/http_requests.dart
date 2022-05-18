@@ -75,7 +75,7 @@ class ShopHttpRequestHelper {
   static Future<Pair<List<Product>, bool>> getMyProducts(
       String userName, String password) async {
     var response = await http.post(
-      Uri.parse('http://localhost:8000/shop/get_sellers_products/'),
+      Uri.parse('$baseBackEndShopUrl/get_sellers_products/'),
       body: '{"seller": "$userName"}',
     );
     if (json.decode(response.body)["status"] == "success") {
