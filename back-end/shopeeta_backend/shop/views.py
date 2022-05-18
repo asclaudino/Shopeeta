@@ -69,6 +69,9 @@ def delete_product(request):
         if not check_user_validity(username, password):
             return JsonResponse({'status': 'fail', 'message': 'Usuário ou senha inválidos!'})
         product = Product.objects.get(id=id)
+        if username != product.seller.username:
+            return JsonResponse({'status': 'fail', 'message': 'Você não tem permissão para deletar este produto!'})
+        
         product.delete()
         return JsonResponse({'status': 'success'})
 

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './wait_for_connection_page.dart';
 import '../models/product.dart';
 import '../widgets/product_grid_tile.dart';
+import '../widgets/home_side_bar.dart';
 import './my_profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -147,16 +148,9 @@ class _HomePageState extends State<HomePage> {
           IntrinsicHeight(
             child: Row(
               children: [
-                SizedBox(
-                  width: _sideBarWidth,
-                  height: MediaQuery.of(context).size.height - _searchBarHeight,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text('Filtros'),
-                      Text('Você está logado!'),
-                    ],
-                  ),
+                HomeSideBar(
+                  sideBarWidth: _sideBarWidth,
+                  searchBarHeight: _searchBarHeight,
                 ),
                 const VerticalDivider(
                   indent: 10,
