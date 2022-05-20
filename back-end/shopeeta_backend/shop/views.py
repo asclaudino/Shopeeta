@@ -1,6 +1,5 @@
-from math import prod
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, FileResponse
+from django.http import JsonResponse
 from .models import Product
 import json
 from userbase.models import User
