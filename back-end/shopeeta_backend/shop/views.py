@@ -1,6 +1,6 @@
 from math import prod
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse
 from .models import Product
 import json
 from userbase.models import User
@@ -12,6 +12,7 @@ from userbase.views import check_user_validity
 @csrf_exempt
 def register_product(request):
     if request.method == 'POST':
+        print(request.body)
         s = request.body.decode('utf-8')
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
@@ -27,9 +28,34 @@ def register_product(request):
         product = Product(name=name, description=description,
                           price=price, seller=seller)
         product.save()
-        return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'success', 'product_id': product.id})
 
     return JsonResponse({'status': 'fail'})
+
+
+@csrf_exempt
+def register_product_image(request, product_id):
+    if request.method == 'POST':
+        image = request.FILES['image']
+        product = Product.objects.get(id=product_id)
+        product.image = image
+        product.save()
+        return JsonResponse({'status': 'success'})
+
+    return JsonResponse({'status': 'fail', 'message': 'Não foi possível salvar a imagem!'})
+
+
+def get_product_image(request, product_id):
+    if (request.method == 'GET'):
+        product = Product.objects.get(id=product_id)
+        if (product.image == None):
+            return JsonResponse({'status': 'success', 'image': ''})
+        imageUrl = product.image.url
+        imageUrl = imageUrl.split('/')[-1]
+        imageUrl = 'uploads/product_images/' + imageUrl
+        return JsonResponse({'status': 'success', 'image': imageUrl})
+    
+    return JsonResponse({'status': 'fail', 'message': 'Algo aconteceu de errado!'})
 
 
 @csrf_exempt

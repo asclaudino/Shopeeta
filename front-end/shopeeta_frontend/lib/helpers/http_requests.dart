@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:core';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
+
+import './base_urls.dart';
 import '../models/product.dart';
 import '../models/my_tuples.dart';
 import '../models/user.dart';
-
-import './base_urls.dart';
 
 class UserHttpRequestHelper {
   static const String baseBackEndUserUrl =
@@ -91,23 +92,96 @@ class ShopHttpRequestHelper {
   static Future<bool> deleteProduct(
       Product product, String userName, String password) async {
     var response = await http.post(
-        Uri.parse('$baseBackEndShopUrl/delete_product/'),
-        body:
-            '{"product_id": "${product.id}", "username": "$userName", "password": "$password"}');
+      Uri.parse('$baseBackEndShopUrl/delete_product/'),
+      body:
+          '{"product_id": "${product.id}", "username": "$userName", "password": "$password"}',
+    );
 
     return json.decode(response.body)["status"] == "success";
   }
 
   static Future<Trio<bool, bool, String>> addProduct(
-      Product product, String userName, String password) async {
-    var response = await http.post(
-        Uri.parse('$baseBackEndShopUrl/register_product/'),
-        body:
-            '{"username": "$userName", "password": "$password", "name": "${product.name}", "description": "${product.description}", "price": ${product.price}}');
-    if (json.decode(response.body)["status"] == "success") {
+    Product product,
+    String userName,
+    String password,
+    PlatformFile? file,
+    List<int> imageBytes,
+  ) async {
+    //---Create http package multipart request object
+    final request = await http.post(
+      Uri.parse('$baseBackEndShopUrl/register_product/'),
+      body:
+          """{"username": "$userName", "password": "$password", "name": "${product.name}", "description": "${product.description}", "price": "${product.price}"}""",
+    );
+
+    var response = json.decode(request.body);
+
+    if (response["status"] != "success") {
+      return Trio(false, false, response["message"]);
+    }
+
+    var productId = response["product_id"];
+
+    if (file != null) {
+      //---Add file to request
+      return addImageToProduct(productId, file, imageBytes);
+    }
+
+    return Trio(true, true, "");
+  }
+
+  static Future<Trio<bool, bool, String>> addImageToProduct(
+    int productId,
+    PlatformFile file,
+    List<int> imageBytes,
+  ) async {
+    //---Create http package multipart request object
+    final request = http.MultipartRequest(
+      "POST",
+      Uri.parse('$baseBackEndShopUrl/register_product_image/$productId/'),
+    );
+
+    //-----add selected file with request
+    request.files.add(
+      http.MultipartFile.fromBytes(
+        "image",
+        imageBytes,
+        filename: file.name,
+      ),
+    );
+
+    //-------Send request
+    var resp = await request.send();
+
+    //------Read response
+    String result = await resp.stream.bytesToString();
+
+    //-------Your response is in result
+
+    if (json.decode(result)["status"] == "success") {
       return Trio(true, true, "");
     } else {
-      return Trio(false, false, json.decode(response.body)["message"]);
+      return Trio(false, false, json.decode(result)["message"]);
+    }
+  }
+
+  static Future<Trio<String, bool, String>> getProductImage(
+      int productId) async {
+    var response = await http.get(
+      Uri.parse('$baseBackEndShopUrl/get_product_image/$productId/'),
+    );
+
+    var body = json.decode(response.body);
+
+    if (body["status"] == "success") {
+      var imageUrl = body["image"] as String;
+      if (imageUrl.isEmpty) {
+        return Trio("", true, "No image found");
+      }
+      imageUrl = "${BaseUrls.baseBackEndUrl}/$imageUrl";
+      return Trio(imageUrl, true, "");
+    } else {
+      return Trio("", false, body["message"]);
     }
   }
 }

@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopeeta_frontend/helpers/http_requests.dart';
-import 'package:shopeeta_frontend/models/product.dart';
-import 'package:shopeeta_frontend/pages/my_profile_page.dart';
 
+import '../helpers/http_requests.dart';
+import '../models/product.dart';
+import '../widgets/image_upload_field.dart';
+import './my_profile_page.dart';
 import './wait_for_connection_page.dart';
 import './home_page.dart';
 
@@ -28,6 +32,9 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
   var _productAdded = false;
   var _errorOnAdd = false;
   var _errorOnAddMessage = "";
+  PlatformFile? _image;
+  Uint8List? _imageBytes;
+  List<int> _bytesList = [];
 
   void _registerProduct() async {
     final form = _formKey.currentState;
@@ -43,6 +50,8 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
         ),
         userName,
         password,
+        _image,
+        _bytesList,
       );
       if (response.success) {
         setState(() {
@@ -65,6 +74,23 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
     if (response) {
       setState(() {
         _logedIn = true;
+      });
+    }
+  }
+
+  void _chooseFileUsingFilePicker() async {
+    //-----pick file by file picker,
+
+    var result = await FilePicker.platform.pickFiles(
+      withReadStream:
+          true, // this will return PlatformFile object with read stream
+    );
+    if (result != null) {
+      _image = result.files.last;
+      _image!.readStream!.last.then((value) {
+        _bytesList = value;
+        _imageBytes = Uint8List.fromList(_bytesList);
+        setState(() {});
       });
     }
   }
@@ -142,85 +168,94 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                   height: MediaQuery.of(context).size.height - _searchBarHeight,
                   child: Form(
                     key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            labelText: 'Nome do produto',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Por favor, digite o nome do produto';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            name = value!;
-                          },
-                        ),
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            labelText: 'Preço',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Por favor, digite o preço do produto';
-                            }
-                            if (double.tryParse(value) == null) {
-                              return 'Por favor, digite um valor válido';
-                            }
-                            if (value.contains(',')) {
-                              return 'Por favor, use ponto, não vírgula';
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            price = double.parse(newValue!);
-                          },
-                        ),
-                        TextFormField(
-                          textInputAction: TextInputAction.done,
-                          decoration: const InputDecoration(
-                            labelText: 'Descrição',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Por favor, digite a descrição do produto';
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            description = newValue!;
-                          },
-                          onFieldSubmitted: (value) {
-                            _formKey.currentState!.validate();
-                          },
-                        ),
-                        if (!_productAdded)
-                          TextButton(
-                            onPressed: () {
-                              _registerProduct();
-                            },
-                            child: const Text('cadastrar'),
-                          ),
-                        if (_productAdded)
-                          const Text("Produto adicionado com sucesso!"),
-                        if (_productAdded)
-                          TextButton(
-                            onPressed: () => Navigator.pushReplacementNamed(
-                                context, MyProfilePage.pageRouteName),
-                            child: const Text("Voltar"),
-                          ),
-                        if (_errorOnAdd)
-                          Text(
-                            _errorOnAddMessage,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.error,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            decoration: const InputDecoration(
+                              labelText: 'Nome do produto',
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, digite o nome do produto';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              name = value!;
+                            },
                           ),
-                      ],
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            decoration: const InputDecoration(
+                              labelText: 'Preço',
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, digite o preço do produto';
+                              }
+                              if (double.tryParse(value) == null) {
+                                return 'Por favor, digite um valor válido';
+                              }
+                              if (value.contains(',')) {
+                                return 'Por favor, use ponto, não vírgula';
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              price = double.parse(newValue!);
+                            },
+                          ),
+                          TextFormField(
+                            textInputAction: TextInputAction.done,
+                            decoration: const InputDecoration(
+                              labelText: 'Descrição',
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, digite a descrição do produto';
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              description = newValue!;
+                            },
+                            onFieldSubmitted: (value) {
+                              _formKey.currentState!.validate();
+                            },
+                          ),
+                          FileUploadWithHttp(
+                            chooseFileUsingFilePicker:
+                                _chooseFileUsingFilePicker,
+                            objFile: _image,
+                            imageBytes: _imageBytes,
+                          ),
+                          if (!_productAdded)
+                            TextButton(
+                              onPressed: () {
+                                _registerProduct();
+                              },
+                              child: const Text('cadastrar'),
+                            ),
+                          if (_productAdded)
+                            const Text("Produto adicionado com sucesso!"),
+                          if (_productAdded)
+                            TextButton(
+                              onPressed: () => Navigator.pushReplacementNamed(
+                                  context, MyProfilePage.pageRouteName),
+                              child: const Text("Voltar"),
+                            ),
+                          if (_errorOnAdd)
+                            Text(
+                              _errorOnAddMessage,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

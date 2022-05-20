@@ -7,6 +7,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.FloatField()
     seller = models.ForeignKey('userbase.User', on_delete=models.CASCADE)
+    image = models.FileField(upload_to='product_images', blank=True, null=True, default=None)
 
     def __str__(self):
         return self.name

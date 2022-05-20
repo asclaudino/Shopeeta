@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
+import '../models/my_tuples.dart';
+import '../helpers/http_requests.dart';
 
-class ProductGridTile extends StatelessWidget {
+class ProductGridTile extends StatefulWidget {
   const ProductGridTile({
     super.key,
     required this.product,
@@ -9,7 +11,33 @@ class ProductGridTile extends StatelessWidget {
   final Product product;
 
   @override
+  State<ProductGridTile> createState() => _ProductGridTileState();
+}
+
+class _ProductGridTileState extends State<ProductGridTile> {
+  String _imageUrl = "";
+  bool _isLoading = true;
+
+  void _getImageUrl() async {
+    Trio<String, bool, String> response =
+        await ShopHttpRequestHelper.getProductImage(widget.product.id);
+    if (response.success) {
+      setState(() {
+        _imageUrl = response.content;
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      _getImageUrl();
+    }
     return Container(
       width: 250,
       height: 270,
@@ -30,16 +58,33 @@ class ProductGridTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
+            if (_isLoading)
+              CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            if (!_isLoading && !_imageUrl.isNotEmpty)
+              Icon(
+                Icons.shopping_cart,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            if (!_isLoading && _imageUrl.isNotEmpty)
+              SizedBox(
+                height: 170,
+                child: Image.network(
+                  _imageUrl,
+                  fit: BoxFit.contain,
+                ),
+              ),
             Text(
-              product.name,
+              widget.product.name,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Text(
-              '\$${product.price}',
+              '\$${widget.product.price}',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             Text(
-              "Vendedor: ${product.seller}",
+              "Vendedor: ${widget.product.seller}",
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ],
