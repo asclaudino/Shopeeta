@@ -18,6 +18,14 @@ class _ProductGridTileState extends State<ProductGridTile> {
   String _imageUrl = "";
   bool _isLoading = true;
 
+  @override
+  void didUpdateWidget(ProductGridTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _isLoading = true;
+    _imageUrl = "";
+    _getImageUrl();
+  }
+
   void _getImageUrl() async {
     Trio<String, bool, String> response =
         await ShopHttpRequestHelper.getProductImage(widget.product.id);
