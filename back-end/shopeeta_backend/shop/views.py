@@ -2,6 +2,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .models import Product
 import json
+
+import hashlib
 from userbase.models import User
 from userbase.views import check_user_validity
 
