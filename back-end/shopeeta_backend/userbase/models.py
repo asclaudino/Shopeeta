@@ -10,7 +10,7 @@ class User(models.Model):
     is_iniciativa = models.BooleanField(default=False)
 
     token = models.CharField(max_length=32, default=None, null=True)
-    last_time_login = models.DateTimeField(auto_now=True)
+    last_time_login = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.username
