@@ -8,6 +8,8 @@ import 'pages/home_page.dart';
 import 'pages/my_profile_page.dart';
 import 'pages/register_product_page.dart';
 import 'pages/wait_for_connection_page.dart';
+import 'pages/product_detail_page.dart';
+import 'models/product_detail_page_arguments.dart';
 
 void main() {
   runApp(MyApp());
@@ -76,6 +78,19 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: _routes,
+      onGenerateRoute: (settings) {
+        if (settings.name == ProductDetailPage.pageRouteName) {
+          final args = settings.arguments as ProductDetailPageArguments;
+          return MaterialPageRoute(
+            builder: (context) => ProductDetailPage(
+              product: args.product,
+              imageUrl: args.imageUrl,
+            ),
+          );
+        }
+        assert(false, 'Need to implement ${settings.name}');
+        return null;
+      },
     );
   }
 }

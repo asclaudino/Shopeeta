@@ -165,7 +165,7 @@ def search_products_by_name(request):
         s = request.body.decode('utf-8')
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
-        name = body.get('seller')
+        name = body.get('name')
 
         products = Product.objects.filter(name__contains=name)
         products_list = []
