@@ -12,9 +12,16 @@ class UserHttpRequestHelper {
   static const String baseBackEndUserUrl =
       "${BaseUrls.baseBackEndUrl}/userbase";
 
+  static Future<bool> registerUser(User user) async {
+    var response = await http.post(Uri.parse('$baseBackEndUserUrl/user/'),
+        body:
+            '{"username": "${user.userName}", "email": "${user.email}", "password": "${user.password}"}');
+    return json.decode(response.body)["status"] == "success";
+  }
+
   static Future<bool> verifyIfIsLogedIn(
       String userName, String password) async {
-    var response = await http.post(Uri.parse('$baseBackEndUserUrl/login/'),
+    var response = await http.put(Uri.parse('$baseBackEndUserUrl/user/'),
         body: '{"username": "$userName", "password": "$password"}');
     return json.decode(response.body)["status"] == "success";
   }
@@ -32,21 +39,16 @@ class UserHttpRequestHelper {
         body: '{"email": "$userName"}');
     return json.decode(response.body)["status"] == "success";
   }
-
-  static Future<bool> registerUser(User user) async {
-    var response = await http.post(Uri.parse('$baseBackEndUserUrl/register/'),
-        body:
-            '{"username": "${user.userName}", "email": "${user.email}", "password": "${user.password}"}');
-    return json.decode(response.body)["status"] == "success";
-  }
 }
+
+//////////////////////////////////////////////////////////////////////
 
 class ShopHttpRequestHelper {
   static const String baseBackEndShopUrl = "${BaseUrls.baseBackEndUrl}/shop";
 
   static Future<Pair<List<Product>, bool>> getLatestProducts() async {
     var response = await http.get(
-      Uri.parse('$baseBackEndShopUrl/get_latest_products/'),
+      Uri.parse('$baseBackEndShopUrl/product/'),
     );
     if (json.decode(response.body)["status"] == "success") {
       var products = (json.decode(response.body)["products"] as List)
@@ -56,6 +58,47 @@ class ShopHttpRequestHelper {
     } else {
       return Pair(List<Product>.empty(), false);
     }
+  }
+
+  static Future<Trio<bool, bool, String>> addProduct(
+    Product product,
+    String userName,
+    String password,
+    PlatformFile? file,
+    List<int> imageBytes,
+  ) async {
+    //---Create http package multipart request object
+    final request = await http.post(
+      Uri.parse('$baseBackEndShopUrl/product/'),
+      body:
+          """{"username": "$userName", "password": "$password", "name": "${product.name}", "description": "${product.description}", "price": "${product.price}"}""",
+    );
+
+    var response = json.decode(request.body);
+
+    if (response["status"] != "success") {
+      return Trio(false, false, response["message"]);
+    }
+
+    var productId = response["product_id"];
+
+    if (file != null) {
+      //---Add file to request
+      return addImageToProduct(productId, file, imageBytes);
+    }
+
+    return Trio(true, true, "");
+  }
+
+  static Future<bool> deleteProduct(
+      Product product, String userName, String password) async {
+    var response = await http.delete(
+      Uri.parse('$baseBackEndShopUrl/product/'),
+      body:
+          '{"product_id": "${product.id}", "username": "$userName", "password": "$password"}',
+    );
+
+    return json.decode(response.body)["status"] == "success";
   }
 
   static Future<Pair<List<Product>, bool>> searchProducts(
@@ -89,47 +132,6 @@ class ShopHttpRequestHelper {
     }
   }
 
-  static Future<bool> deleteProduct(
-      Product product, String userName, String password) async {
-    var response = await http.post(
-      Uri.parse('$baseBackEndShopUrl/delete_product/'),
-      body:
-          '{"product_id": "${product.id}", "username": "$userName", "password": "$password"}',
-    );
-
-    return json.decode(response.body)["status"] == "success";
-  }
-
-  static Future<Trio<bool, bool, String>> addProduct(
-    Product product,
-    String userName,
-    String password,
-    PlatformFile? file,
-    List<int> imageBytes,
-  ) async {
-    //---Create http package multipart request object
-    final request = await http.post(
-      Uri.parse('$baseBackEndShopUrl/register_product/'),
-      body:
-          """{"username": "$userName", "password": "$password", "name": "${product.name}", "description": "${product.description}", "price": "${product.price}"}""",
-    );
-
-    var response = json.decode(request.body);
-
-    if (response["status"] != "success") {
-      return Trio(false, false, response["message"]);
-    }
-
-    var productId = response["product_id"];
-
-    if (file != null) {
-      //---Add file to request
-      return addImageToProduct(productId, file, imageBytes);
-    }
-
-    return Trio(true, true, "");
-  }
-
   static Future<Trio<bool, bool, String>> addImageToProduct(
     int productId,
     PlatformFile file,
@@ -138,7 +140,7 @@ class ShopHttpRequestHelper {
     //---Create http package multipart request object
     final request = http.MultipartRequest(
       "POST",
-      Uri.parse('$baseBackEndShopUrl/register_product_image/$productId/'),
+      Uri.parse('$baseBackEndShopUrl/product_image/$productId/'),
     );
 
     //-----add selected file with request
@@ -168,7 +170,7 @@ class ShopHttpRequestHelper {
   static Future<Trio<String, bool, String>> getProductImage(
       int productId) async {
     var response = await http.get(
-      Uri.parse('$baseBackEndShopUrl/get_product_image/$productId/'),
+      Uri.parse('$baseBackEndShopUrl/product_image/$productId/'),
     );
 
     var body = json.decode(response.body);
