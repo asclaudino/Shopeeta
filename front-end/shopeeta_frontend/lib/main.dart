@@ -8,6 +8,8 @@ import 'pages/home_page.dart';
 import 'pages/my_profile_page.dart';
 import 'pages/register_product_page.dart';
 import 'pages/wait_for_connection_page.dart';
+import 'pages/product_detail_page.dart';
+import 'models/product_detail_page_arguments.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,17 +37,17 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme(
+        colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          primary: Colors.purple,
+          primary: Color(0xFFEA5158),
           onPrimary: Colors.white,
-          secondary: Colors.blueAccent,
-          onSecondary: Colors.blueGrey.shade100,
+          secondary: Color(0xFFA43941),
+          onSecondary: Colors.white,
           error: Colors.black,
           onError: Colors.red,
-          background: Colors.white60,
+          background: Color(0xFFF4F6FC),
           onBackground: Colors.black,
-          surface: Colors.white54,
+          surface: Colors.white,
           onSurface: Colors.black,
         ),
         textTheme: const TextTheme(
@@ -53,22 +55,22 @@ class MyApp extends StatelessWidget {
             fontSize: 72.0,
             fontWeight: FontWeight.bold,
             color: Colors.white,
-            fontFamily: "OleoScriptSwashCaps",
+            fontFamily: "RobotoFamilyFont",
           ),
           button: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.normal,
-            color: Colors.black,
-            fontFamily: "PlayfairDisplay",
+            color: Colors.white,
+            fontFamily: "RobotoFamilyFont",
           ),
           bodyText1: TextStyle(
-            fontFamily: "PlayfairDisplay",
+            fontFamily: "RobotoFamilyFont",
             fontSize: 16.0,
             fontWeight: FontWeight.normal,
             color: Colors.black,
           ),
           headline2: TextStyle(
-            fontFamily: "PlayfairDisplay",
+            fontFamily: "RobotoFamilyFont",
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -76,6 +78,19 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: _routes,
+      onGenerateRoute: (settings) {
+        if (settings.name == ProductDetailPage.pageRouteName) {
+          final args = settings.arguments as ProductDetailPageArguments;
+          return MaterialPageRoute(
+            builder: (context) => ProductDetailPage(
+              product: args.product,
+              imageUrl: args.imageUrl,
+            ),
+          );
+        }
+        assert(false, 'Need to implement ${settings.name}');
+        return null;
+      },
     );
   }
 }
