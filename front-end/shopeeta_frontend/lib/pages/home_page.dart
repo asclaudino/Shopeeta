@@ -93,20 +93,17 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SizedBox(
                   width: _sideBarWidth,
-                  child: TextButton(
-                    child: Text(
-                      'Shopeeta',
-                      style: Theme.of(context).textTheme.headline1!.copyWith(
-                            fontSize: 26,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
+                  child: IconButton(
+                    icon: Image.asset(
+                        '../assets/images/Logo_shopeeta_header.png'),
+                    padding: EdgeInsets.zero,
                     onPressed: () {
                       Navigator.pushReplacementNamed(
                           context, HomePage.pageRouteName);
                     },
                   ),
                 ),
+                Expanded(child: Container()),
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 2,
                   child: Form(
@@ -126,6 +123,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.search),
+                  color: Colors.white,
                   onPressed: () {
                     _searchProducts(form);
                   },
@@ -133,12 +131,14 @@ class _HomePageState extends State<HomePage> {
                 Expanded(child: Container()),
                 IconButton(
                   icon: const Icon(Icons.shopping_cart),
+                  color: Colors.white,
                   onPressed: () {
                     Navigator.pushNamed(context, '/cart');
                   },
                 ),
                 IconButton(
                   icon: const Icon(Icons.account_circle_rounded),
+                  color: Colors.white,
                   onPressed: () {
                     Navigator.pushReplacementNamed(
                         context, MyProfilePage.pageRouteName);

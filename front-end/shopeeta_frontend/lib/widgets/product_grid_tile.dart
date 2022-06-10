@@ -70,15 +70,15 @@ class _ProductGridTileState extends State<ProductGridTile> {
       },
       child: Container(
         width: 250,
-        height: 270,
-        padding: const EdgeInsets.all(10),
+        height: 350,
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
               blurRadius: 3,
               spreadRadius: 3,
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withOpacity(0.1),
               offset: const Offset(0, 0),
             ),
           ],
@@ -86,7 +86,8 @@ class _ProductGridTileState extends State<ProductGridTile> {
         margin: const EdgeInsets.all(10),
         child: GridTile(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               if (_isLoading)
                 CircularProgressIndicator(
@@ -105,14 +106,17 @@ class _ProductGridTileState extends State<ProductGridTile> {
                           ),
                   ),
                 ),
+              const SizedBox(height: 10),
               Text(
                 widget.product.name,
                 style: Theme.of(context).textTheme.bodyText1,
               ),
+              const SizedBox(height: 10),
               Text(
                 '\$${widget.product.price}',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.headline2,
               ),
+              Expanded(child: Container()),
               Text(
                 "Vendedor: ${widget.product.seller}",
                 style: Theme.of(context).textTheme.bodyText1,
