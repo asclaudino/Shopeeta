@@ -54,115 +54,98 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ],
             ),
           ),
-          IntrinsicHeight(
-            child: Row(
-              children: [
-                SizedBox(
-                  width: _sideBarWidth,
-                  height: MediaQuery.of(context).size.height - _searchBarHeight,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 20.0,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        Text(
-                          'Colocar opções aqui',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const VerticalDivider(
-                  indent: 10,
-                  endIndent: 10,
-                  width: 10,
-                  thickness: 0,
-                  color: Colors.black54,
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 0.4 *
-                            (MediaQuery.of(context).size.height -
-                                _searchBarHeight),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.onBackground,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: IntrinsicHeight(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 0.4 *
+                                (MediaQuery.of(context).size.height -
+                                    _searchBarHeight),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
+                              ),
+                            ),
+                            child: Hero(
+                              tag: widget.product.id,
+                              child: widget.imageUrl.isEmpty
+                                  ? Icon(
+                                      Icons.image,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    )
+                                  : InteractiveViewer(
+                                      panEnabled: true,
+                                      minScale: 0.5,
+                                      maxScale: 3.0,
+                                      child: Image.network(
+                                        widget.imageUrl,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                            ),
                           ),
-                        ),
-                        child: Hero(
-                          tag: widget.product.id,
-                          child: widget.imageUrl.isEmpty
-                              ? Icon(
-                                  Icons.image,
-                                  color: Theme.of(context).colorScheme.primary,
-                                )
-                              : Image.network(
-                                  widget.imageUrl,
-                                  fit: BoxFit.contain,
-                                ),
-                        ),
-                        //child: const Icon(Icons.image),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            widget.product.description,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ],
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Text(
-                        widget.product.description,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ],
-                  ),
-                ),
-                const VerticalDivider(
-                  indent: 10,
-                  endIndent: 10,
-                  width: 10,
-                  thickness: 0,
-                  color: Colors.black54,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(30),
-                  width: _rightSideBarWidth,
-                  height: MediaQuery.of(context).size.height - _searchBarHeight,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 10),
-                        Text(
-                          widget.product.name,
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          "R\$ ${widget.product.price}",
-                          style:
-                              Theme.of(context).textTheme.headline2!.copyWith(
-                                    fontSize: 16,
-                                    color: Colors.lightGreenAccent,
-                                  ),
-                        ),
-                      ],
                     ),
-                  ),
+                    const VerticalDivider(
+                      width: 10,
+                      thickness: 0,
+                      color: Colors.black54,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 10,
+                      ),
+                      width: _rightSideBarWidth,
+                      height: double.infinity,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10),
+                            Text(
+                              widget.product.name,
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              "R\$ ${widget.product.price}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline2!
+                                  .copyWith(
+                                    fontSize: 16,
+                                    color: Colors.green,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ],

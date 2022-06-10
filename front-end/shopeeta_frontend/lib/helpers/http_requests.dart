@@ -51,9 +51,10 @@ class ShopHttpRequestHelper {
       Uri.parse('$baseBackEndShopUrl/product/'),
     );
     if (json.decode(response.body)["status"] == "success") {
-      var products = (json.decode(response.body)["products"] as List)
-          .map((i) => Product.fromJson(i))
-          .toList();
+      var products =
+          (json.decode(utf8.decode(response.bodyBytes))["products"] as List)
+              .map((i) => Product.fromJson(i))
+              .toList();
       return Pair(products, true);
     } else {
       return Pair(List<Product>.empty(), false);

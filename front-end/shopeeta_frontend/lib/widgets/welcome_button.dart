@@ -43,7 +43,10 @@ class WelcomeButton extends StatelessWidget {
                 const SizedBox(
                   width: 20,
                 ),
-                const Icon(Icons.arrow_forward),
+                Icon(
+                  Icons.arrow_forward,
+                  color: textColor,
+                ),
               ],
             ),
           ),

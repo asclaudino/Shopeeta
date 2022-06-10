@@ -100,6 +100,7 @@ class _ProductGridTileState extends State<ProductGridTile> {
                     tag: widget.product.id,
                     child: SizedBox(
                       height: 170,
+                      width: double.infinity,
                       child: _imageUrl.isNotEmpty
                           ? _image
                           : Icon(
@@ -122,7 +123,7 @@ class _ProductGridTileState extends State<ProductGridTile> {
                   height: 10,
                 ),
                 Text(
-                  '\$${widget.product.price}',
+                  '\$${widget.product.price.toStringAsFixed(2)}',
                   style: Theme.of(context).textTheme.headline2,
                 ),
                 Expanded(
