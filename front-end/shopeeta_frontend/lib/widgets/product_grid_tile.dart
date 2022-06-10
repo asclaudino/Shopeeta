@@ -98,6 +98,7 @@ class _ProductGridTileState extends State<ProductGridTile> {
                   tag: widget.product.id,
                   child: SizedBox(
                     height: 170,
+                    width: double.infinity,
                     child: _imageUrl.isNotEmpty
                         ? _image
                         : Icon(

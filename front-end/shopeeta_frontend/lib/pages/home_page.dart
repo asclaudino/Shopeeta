@@ -120,8 +120,17 @@ class _HomePageState extends State<HomePage> {
                   child: Form(
                     key: form,
                     child: TextFormField(
+                      cursorColor: Colors.white,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         hintText: 'Pesquisar',
+                        hintStyle: TextStyle(color: Colors.white),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
                       ),
                       onChanged: (value) {
                         _toBeSearched = value;
@@ -152,7 +161,10 @@ class _HomePageState extends State<HomePage> {
                   offset: Offset(0, _searchBarHeight / 2),
                   tooltip: "Opções de usuário",
                   elevation: 10,
-                  icon: const Icon(Icons.account_circle_rounded),
+                  icon: const Icon(
+                    Icons.account_circle_rounded,
+                    color: Colors.white,
+                  ),
                   onSelected: (ProfileMenuOptions option) {
                     _popUpMenuButtonAction(option);
                   },

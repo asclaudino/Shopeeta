@@ -135,7 +135,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   .headline2!
                                   .copyWith(
                                     fontSize: 16,
-                                    color: Colors.lightGreenAccent,
+                                    color: Colors.green,
                                   ),
                             ),
                           ],
