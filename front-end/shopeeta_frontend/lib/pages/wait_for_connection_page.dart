@@ -10,13 +10,8 @@ class WaitForConnectionPage extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: AnimatedPulsatingWidget(
-            child: Text(
-              "Shopeeta",
-              style: Theme.of(context).textTheme.headline1!.copyWith(
-                    fontSize: 150,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-            ),
+            child: Image.asset('../assets/images/Logo_shopeeta_cart_on_top.png',
+                width: 300, color: Theme.of(context).colorScheme.primary),
           ),
         ),
       ),

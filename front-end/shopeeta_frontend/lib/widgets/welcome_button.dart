@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class WelcomeButton extends StatelessWidget {
-  const WelcomeButton({super.key, required this.text, required this.onPressed});
+  const WelcomeButton(
+      {super.key,
+      required this.text,
+      required this.onPressed,
+      required this.color,
+      required this.textColor});
   final Function onPressed;
   final String text;
+  final Color color;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +21,11 @@ class WelcomeButton extends StatelessWidget {
           height: 50,
           width: 200,
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(25),
+              color: color,
+              borderRadius: BorderRadius.circular(5),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withOpacity(0.1),
                   spreadRadius: 2,
                   blurRadius: 2,
                   offset: const Offset(0, 0),
@@ -28,10 +35,11 @@ class WelcomeButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  text,
-                  style: Theme.of(context).textTheme.button,
-                ),
+                Text(text,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button!
+                        .copyWith(color: textColor)),
                 const SizedBox(
                   width: 20,
                 ),

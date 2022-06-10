@@ -88,43 +88,56 @@ class _MyProfilePageState extends State<MyProfilePage> {
             height: _searchBarHeight,
             color: Theme.of(context).colorScheme.primary,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   width: _sideBarWidth,
-                  child: TextButton(
-                    child: Text(
-                      'Shopeeta',
-                      style: Theme.of(context).textTheme.headline1!.copyWith(
-                            fontSize: 26,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
+                  child: IconButton(
+                    icon: Image.asset(
+                        '../assets/images/Logo_shopeeta_header.png'),
+                    padding: EdgeInsets.zero,
                     onPressed: () {
                       Navigator.pushReplacementNamed(
                           context, HomePage.pageRouteName);
                     },
                   ),
                 ),
-                SizedBox(
+                Expanded(child: Container()),
+                Container(
                   width: MediaQuery.of(context).size.width / 2,
-                  child: Form(
-                    key: form,
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: 'Pesquisar',
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 0,
+                      bottom: 7,
+                      left: 10,
+                      right: 10,
+                    ),
+                    child: Form(
+                      key: form,
+                      child: TextFormField(
+                        style: Theme.of(context).textTheme.bodyText1,
+                        //textAlignVertical: TextAlignVertical.center,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Pesquisar',
+                        ),
+                        onChanged: (value) {
+                          _toBeSearched = value;
+                        },
+                        onFieldSubmitted: (value) {
+                          _searchProducts(form);
+                        },
                       ),
-                      onChanged: (value) {
-                        _toBeSearched = value;
-                      },
-                      onFieldSubmitted: (value) {
-                        _searchProducts(form);
-                      },
                     ),
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.search),
+                  color: Colors.white,
                   onPressed: () {
                     _searchProducts(form);
                   },
@@ -132,12 +145,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 Expanded(child: Container()),
                 IconButton(
                   icon: const Icon(Icons.shopping_cart),
+                  color: Colors.white,
                   onPressed: () {
                     Navigator.pushNamed(context, '/cart');
                   },
                 ),
                 IconButton(
                   icon: const Icon(Icons.account_circle_rounded),
+                  color: Colors.white,
                   onPressed: () {
                     Navigator.pushReplacementNamed(
                         context, MyProfilePage.pageRouteName);
