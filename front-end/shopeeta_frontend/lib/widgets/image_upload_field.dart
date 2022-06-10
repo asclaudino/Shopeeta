@@ -18,26 +18,25 @@ class FileUploadWithHttp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 200,
-          height: 200,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-              width: 1,
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(5),
             ),
-            borderRadius: BorderRadius.circular(5),
+            child: imageBytes == null
+                ? Center(
+                    child: TextButton(
+                      child: const Text("Escolher Imagem"),
+                      onPressed: () => chooseFileUsingFilePicker(),
+                    ),
+                  )
+                : Image.memory(imageBytes!, fit: BoxFit.contain),
           ),
-          child: imageBytes == null
-              ? Center(
-                  child: TextButton(
-                    child: const Text("Escolher Imagem"),
-                    onPressed: () => chooseFileUsingFilePicker(),
-                  ),
-                )
-              : Image.memory(imageBytes!, fit: BoxFit.contain),
         ),
         if (objFile != null)
           TextButton(
