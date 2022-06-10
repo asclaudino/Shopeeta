@@ -117,14 +117,10 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
               children: [
                 SizedBox(
                   width: _sideBarWidth,
-                  child: TextButton(
-                    child: Text(
-                      'Shopeeta',
-                      style: Theme.of(context).textTheme.headline1!.copyWith(
-                            fontSize: 26,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
+                  child: IconButton(
+                    icon: Image.asset(
+                        '../assets/images/Logo_shopeeta_header.png'),
+                    padding: EdgeInsets.zero,
                     onPressed: () {
                       Navigator.pushReplacementNamed(
                           context, HomePage.pageRouteName);
@@ -133,6 +129,7 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                 ),
                 Expanded(child: Container()),
                 IconButton(
+                  color: Colors.white,
                   icon: const Icon(Icons.shopping_cart),
                   onPressed: () {
                     Navigator.pushNamed(context, '/cart');

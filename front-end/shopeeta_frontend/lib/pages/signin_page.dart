@@ -51,19 +51,20 @@ class _SigninPageState extends State<SigninPage> {
       appBar: AppBar(
         title: const Text("Signin"),
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: ListView(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           Center(
             child: Container(
               width: 400,
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
+                color: Theme.of(context).colorScheme.surface,
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 3,
                     spreadRadius: 3,
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withOpacity(0.1),
                     offset: const Offset(0, 0),
                   ),
                 ],
@@ -74,11 +75,11 @@ class _SigninPageState extends State<SigninPage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      "Shopeeta",
-                      style: Theme.of(context).textTheme.headline1!.copyWith(
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
+                    Image.asset(
+                        '../assets/images/Logo_shopeeta_cart_on_top.png',
+                        width: 220,
+                        color: Theme.of(context).colorScheme.primary),
+                    const SizedBox(height: 10),
                     Text(
                       "Página de cadastro",
                       style: Theme.of(context).textTheme.headline2,
