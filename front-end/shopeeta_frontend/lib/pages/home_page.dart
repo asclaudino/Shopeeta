@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './wait_for_connection_page.dart';
 import '../models/product.dart';
 import '../models/filter.dart';
+import '../models/pop_up_menu_button_enums.dart';
 import '../widgets/product_grid_tile.dart';
 import '../widgets/home_side_bar.dart';
 import './my_profile_page.dart';
@@ -31,6 +32,16 @@ class _HomePageState extends State<HomePage> {
     Filter(name: "Comida", isSelected: false),
     Filter(name: "Roupa", isSelected: false),
   ];
+
+  void _popUpMenuButtonAction(ProfileMenuOptions option) {
+    switch (option) {
+      case ProfileMenuOptions.myProfile:
+        Navigator.pushReplacementNamed(context, MyProfilePage.pageRouteName);
+        break;
+      default:
+        break;
+    }
+  }
 
   void _verifyIfIsLogedIn() async {
     var connected =
@@ -151,13 +162,25 @@ class _HomePageState extends State<HomePage> {
                     Navigator.pushNamed(context, '/cart');
                   },
                 ),
-                IconButton(
+                PopupMenuButton<ProfileMenuOptions>(
+                  position: PopupMenuPosition.under,
+                  offset: Offset(0, _searchBarHeight / 2),
+                  tooltip: "Opções de usuário",
+                  elevation: 10,
                   icon: const Icon(Icons.account_circle_rounded),
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, MyProfilePage.pageRouteName);
+                  onSelected: (ProfileMenuOptions option) {
+                    _popUpMenuButtonAction(option);
                   },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: ProfileMenuOptions.myProfile,
+                      child: Text('Meu Perfil'),
+                    ),
+                    const PopupMenuItem(
+                      value: ProfileMenuOptions.logout,
+                      child: Text('Sair'),
+                    ),
+                  ],
                 ),
               ],
             ),
