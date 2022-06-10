@@ -85,9 +85,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       color:
                                           Theme.of(context).colorScheme.primary,
                                     )
-                                  : Image.network(
-                                      widget.imageUrl,
-                                      fit: BoxFit.contain,
+                                  : InteractiveViewer(
+                                      panEnabled: true,
+                                      minScale: 0.5,
+                                      maxScale: 3.0,
+                                      child: Image.network(
+                                        widget.imageUrl,
+                                        fit: BoxFit.contain,
+                                      ),
                                     ),
                             ),
                           ),
