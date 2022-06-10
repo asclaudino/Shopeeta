@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
             height: _searchBarHeight,
             color: Theme.of(context).colorScheme.primary,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   width: _sideBarWidth,
@@ -115,35 +115,41 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Expanded(child: Container()),
-                SizedBox(
+                Container(
                   width: MediaQuery.of(context).size.width / 2,
-                  child: Form(
-                    key: form,
-                    child: TextFormField(
-                      cursorColor: Colors.white,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        hintText: 'Pesquisar',
-                        hintStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 0,
+                      bottom: 7,
+                      left: 10,
+                      right: 10,
+                    ),
+                    child: Form(
+                      key: form,
+                      child: TextFormField(
+                        style: Theme.of(context).textTheme.bodyText1,
+                        //textAlignVertical: TextAlignVertical.center,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Pesquisar',
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
+                        onChanged: (value) {
+                          _toBeSearched = value;
+                        },
+                        onFieldSubmitted: (value) {
+                          _searchProducts(form);
+                        },
                       ),
-                      onChanged: (value) {
-                        _toBeSearched = value;
-                      },
-                      onFieldSubmitted: (value) {
-                        _searchProducts(form);
-                      },
                     ),
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.search),
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   onPressed: () {
                     _searchProducts(form);
                   },
@@ -151,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(child: Container()),
                 IconButton(
                   icon: const Icon(Icons.shopping_cart),
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   onPressed: () {
                     Navigator.pushNamed(context, '/cart');
                   },

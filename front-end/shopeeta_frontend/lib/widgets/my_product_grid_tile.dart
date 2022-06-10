@@ -42,15 +42,15 @@ class _MyProductGridTileState extends State<MyProductGridTile> {
     }
     return Container(
       width: 250,
-      height: 270,
-      padding: const EdgeInsets.all(10),
+      height: 350,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
             blurRadius: 3,
             spreadRadius: 3,
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withOpacity(0.1),
             offset: const Offset(0, 0),
           ),
         ],
@@ -58,7 +58,8 @@ class _MyProductGridTileState extends State<MyProductGridTile> {
       margin: const EdgeInsets.all(10),
       child: GridTile(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (_isLoading)
               CircularProgressIndicator(
@@ -72,28 +73,38 @@ class _MyProductGridTileState extends State<MyProductGridTile> {
             if (!_isLoading && _imageUrl.isNotEmpty)
               SizedBox(
                 height: 140,
+                width: double.infinity,
                 child: Image.network(
                   _imageUrl,
                   fit: BoxFit.contain,
                 ),
               ),
+            const SizedBox(
+              height: 10,
+            ),
             Text(
               widget.product.name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodyText1,
+            ),
+            const SizedBox(
+              height: 10,
             ),
             Text(
               '\$${widget.product.price}',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.headline2,
             ),
-            Text(
-              "Vendedor: ${widget.product.seller}",
-              style: Theme.of(context).textTheme.bodyText1,
+            Expanded(
+              child: Container(),
             ),
-            IconButton(
-              onPressed: () => widget.deleteProduct(),
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
+            Center(
+              child: IconButton(
+                onPressed: () => widget.deleteProduct(),
+                icon: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).colorScheme.error.withOpacity(0.6),
+                ),
               ),
             ),
           ],

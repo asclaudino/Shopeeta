@@ -54,12 +54,12 @@ class _LoginPageState extends State<LoginPage> {
           height: 500,
           width: 700,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
                 blurRadius: 3,
                 spreadRadius: 3,
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withOpacity(0.1),
                 offset: const Offset(0, 0),
               ),
             ],
@@ -70,30 +70,37 @@ class _LoginPageState extends State<LoginPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        "Shopeeta",
-                        style: Theme.of(context).textTheme.headline1!.copyWith(
-                            color: Theme.of(context).colorScheme.primary),
+                      const SizedBox(
+                        height: 10,
                       ),
+                      Image.asset(
+                          '../assets/images/Logo_shopeeta_cart_on_top.png',
+                          width: 220,
+                          color: Theme.of(context).colorScheme.primary),
+                      const SizedBox(height: 10),
                       Text(
                         "Login",
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       if (!_successOnLogin)
-                        Text(
-                          "O nome de usuário e senha devem estar corretos.",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(
-                                color: Theme.of(context).colorScheme.onError,
-                              ),
+                        SizedBox(
+                          height: 50,
+                          child: Text(
+                            "\nUsuário ou senha incorretos.",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.onError,
+                                ),
+                          ),
                         ),
-                      const SizedBox(
-                        height: 50,
-                      ),
+                      if (_successOnLogin)
+                        const SizedBox(
+                          height: 50,
+                        ),
                       Form(
                         key: _formKey,
                         autovalidateMode: AutovalidateMode.disabled,
@@ -186,6 +193,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       WelcomeButton(
                         text: "Cadastrar-se",
+                        color: Theme.of(context).colorScheme.primary,
+                        textColor: Theme.of(context).colorScheme.onPrimary,
                         onPressed: () {
                           Navigator.of(context)
                               .pushNamed(SigninPage.pageRouteName);
