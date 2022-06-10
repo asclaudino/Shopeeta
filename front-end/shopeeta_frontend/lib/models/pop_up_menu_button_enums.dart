@@ -1,0 +1,4 @@
+enum ProfileMenuOptions {
+  myProfile,
+  logout,
+}

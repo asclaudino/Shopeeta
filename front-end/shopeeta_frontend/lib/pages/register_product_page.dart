@@ -226,18 +226,25 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                               _formKey.currentState!.validate();
                             },
                           ),
-                          FileUploadWithHttp(
-                            chooseFileUsingFilePicker:
-                                _chooseFileUsingFilePicker,
-                            objFile: _image,
-                            imageBytes: _imageBytes,
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            height: 300,
+                            width: double.infinity,
+                            child: FileUploadWithHttp(
+                              chooseFileUsingFilePicker:
+                                  _chooseFileUsingFilePicker,
+                              objFile: _image,
+                              imageBytes: _imageBytes,
+                            ),
                           ),
                           if (!_productAdded)
                             TextButton(
                               onPressed: () {
                                 _registerProduct();
                               },
-                              child: const Text('cadastrar'),
+                              child: const Text('Cadastrar produto'),
                             ),
                           if (_productAdded)
                             const Text("Produto adicionado com sucesso!"),
