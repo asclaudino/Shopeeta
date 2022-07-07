@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:shopeeta_frontend/models/filter.dart';
 import './base_urls.dart';
 import '../models/product.dart';
 import '../models/my_tuples.dart';
@@ -103,7 +103,8 @@ class ShopHttpRequestHelper {
   }
 
   static Future<Pair<List<Product>, bool>> searchProducts(
-      String toBeSearched) async {
+      String toBeSearched, List<Filter> filters) async {
+    // ---TODO: implement searchProducts with filters
     var response = await http.post(
         Uri.parse('$baseBackEndShopUrl/search_products/'),
         body: '{"name": "$toBeSearched"}');

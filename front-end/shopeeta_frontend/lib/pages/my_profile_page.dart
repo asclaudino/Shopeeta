@@ -82,6 +82,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             sideBarWidth: _sideBarWidth,
             searchBarHeight: _searchBarHeight,
             changeProductsParent: _changeProductsPage,
+            filters: [],
             isMyPage: true,
             userName: userName,
           ),
