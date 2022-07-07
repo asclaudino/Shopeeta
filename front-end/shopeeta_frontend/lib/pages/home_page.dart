@@ -22,13 +22,18 @@ class _HomePageState extends State<HomePage> {
   String userName = "";
   String password = "";
   final _searchBarHeight = 50.0;
-  final _sideBarWidth = 200.0;
+  final _sideBarWidth = 220.0;
   var _loadedProducts = false;
   List<Product> _products = [];
   final List<Filter> _filters = [
-    Filter(name: "Iniciativa", isSelected: false),
-    Filter(name: "Comida", isSelected: false),
-    Filter(name: "Roupa", isSelected: false),
+    Filter(name: "Produto de Iniciativa", isSelected: false),
+    Filter(name: "Bizu de veterano", isSelected: false),
+    Filter(name: "Celulares", isSelected: false),
+    Filter(name: "Eletrodomésticos", isSelected: false),
+    Filter(name: "Informática", isSelected: false),
+    Filter(name: "TV e Home Theater", isSelected: false),
+    Filter(name: "Móveis", isSelected: false),
+    Filter(name: "Beleza e Perfumaria", isSelected: false),
   ];
 
   void _verifyIfIsLogedIn() async {
@@ -84,25 +89,26 @@ class _HomePageState extends State<HomePage> {
             searchBarHeight: _searchBarHeight,
             changeProductsParent: _changeProductsPage,
             isMyPage: false,
+            userName: userName,
           ),
           IntrinsicHeight(
             child: Row(
               children: [
+                Expanded(
+                  child: Container(),
+                ),
                 HomeSideBar(
                   sideBarWidth: _sideBarWidth,
                   searchBarHeight: _searchBarHeight,
                   filters: _filters,
                   changeFilterState: _changeFilterState,
                 ),
-                const VerticalDivider(
-                  indent: 10,
-                  endIndent: 10,
-                  width: 10,
-                  thickness: 0,
-                  color: Colors.black54,
-                ),
                 Container(
-                  padding: const EdgeInsets.all(30),
+                  constraints: const BoxConstraints(
+                    minWidth: 100,
+                    maxWidth: 1100,
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 30),
                   width: MediaQuery.of(context).size.width - _sideBarWidth - 10,
                   height: MediaQuery.of(context).size.height - _searchBarHeight,
                   child: SingleChildScrollView(
@@ -114,6 +120,9 @@ class _HomePageState extends State<HomePage> {
                       }).toList(),
                     ),
                   ),
+                ),
+                Expanded(
+                  child: Container(),
                 ),
               ],
             ),

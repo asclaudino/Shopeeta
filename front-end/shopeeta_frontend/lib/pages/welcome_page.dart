@@ -59,8 +59,9 @@ class WelcomePage extends StatelessWidget {
                             left: 8.0,
                           ),
                           child: WelcomeButton(
-                            color: Theme.of(context).colorScheme.surface,
-                            textColor: Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.secondary,
+                            textColor:
+                                Theme.of(context).colorScheme.onSecondary,
                             text: 'Entrar',
                             onPressed: () => Navigator.of(context)
                                 .pushNamed(LoginPage.pageRouteName),

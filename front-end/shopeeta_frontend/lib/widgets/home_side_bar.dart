@@ -21,9 +21,9 @@ class HomeSideBar extends StatelessWidget {
       width: sideBarWidth,
       height: MediaQuery.of(context).size.height - searchBarHeight,
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 20.0,
+        padding: const EdgeInsets.only(
+          top: 40.0,
+          left: 20.0,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -33,18 +33,29 @@ class HomeSideBar extends StatelessWidget {
               'Filtrar por:',
               style: Theme.of(context).textTheme.headline2,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(
+              height: 10,
+            ),
             for (final filter in filters)
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Checkbox(
-                    value: filter.isSelected,
-                    onChanged: (value) {
-                      changeFilterState(filter, value);
-                    },
-                    activeColor: Theme.of(context).colorScheme.primary,
+                  SizedBox(
+                    width: 20,
+                    child: Transform.scale(
+                      scale: 0.7,
+                      child: Checkbox(
+                        value: filter.isSelected,
+                        onChanged: (value) {
+                          changeFilterState(filter, value);
+                        },
+                        activeColor: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
                   ),
                   Text(
                     filter.name,
@@ -52,7 +63,9 @@ class HomeSideBar extends StatelessWidget {
                   ),
                 ],
               ),
-            const SizedBox(height: 20),
+            const SizedBox(
+              height: 20,
+            ),
             Text(
               'Colocar outras opções aqui',
               style: Theme.of(context).textTheme.bodyText1,
