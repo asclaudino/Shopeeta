@@ -117,14 +117,10 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
               children: [
                 SizedBox(
                   width: _sideBarWidth,
-                  child: TextButton(
-                    child: Text(
-                      'Shopeeta',
-                      style: Theme.of(context).textTheme.headline1!.copyWith(
-                            fontSize: 26,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
+                  child: IconButton(
+                    icon: Image.asset(
+                        '../assets/images/Logo_shopeeta_header.png'),
+                    padding: EdgeInsets.zero,
                     onPressed: () {
                       Navigator.pushReplacementNamed(
                           context, HomePage.pageRouteName);
@@ -133,6 +129,7 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                 ),
                 Expanded(child: Container()),
                 IconButton(
+                  color: Colors.white,
                   icon: const Icon(Icons.shopping_cart),
                   onPressed: () {
                     Navigator.pushNamed(context, '/cart');
@@ -226,18 +223,25 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                               _formKey.currentState!.validate();
                             },
                           ),
-                          FileUploadWithHttp(
-                            chooseFileUsingFilePicker:
-                                _chooseFileUsingFilePicker,
-                            objFile: _image,
-                            imageBytes: _imageBytes,
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            height: 300,
+                            width: double.infinity,
+                            child: FileUploadWithHttp(
+                              chooseFileUsingFilePicker:
+                                  _chooseFileUsingFilePicker,
+                              objFile: _image,
+                              imageBytes: _imageBytes,
+                            ),
                           ),
                           if (!_productAdded)
                             TextButton(
                               onPressed: () {
                                 _registerProduct();
                               },
-                              child: const Text('cadastrar'),
+                              child: const Text('Cadastrar produto'),
                             ),
                           if (_productAdded)
                             const Text("Produto adicionado com sucesso!"),

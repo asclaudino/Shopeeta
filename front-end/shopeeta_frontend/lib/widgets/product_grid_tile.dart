@@ -58,66 +58,83 @@ class _ProductGridTileState extends State<ProductGridTile> {
     if (_isLoading) {
       _getImageUrl();
     }
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pushNamed(
-          ProductDetailPage.pageRouteName,
-          arguments: ProductDetailPageArguments(
-            product: widget.product,
-            imageUrl: _imageUrl,
-          ),
-        );
-      },
-      child: Container(
-        width: 250,
-        height: 270,
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 3,
-              spreadRadius: 3,
-              color: Colors.black.withOpacity(0.3),
-              offset: const Offset(0, 0),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            ProductDetailPage.pageRouteName,
+            arguments: ProductDetailPageArguments(
+              product: widget.product,
+              imageUrl: _imageUrl,
             ),
-          ],
-        ),
-        margin: const EdgeInsets.all(10),
-        child: GridTile(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              if (_isLoading)
-                CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              if (!_isLoading)
-                Hero(
-                  tag: widget.product.id,
-                  child: SizedBox(
-                    height: 170,
-                    child: _imageUrl.isNotEmpty
-                        ? _image
-                        : Icon(
-                            Icons.image,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                  ),
-                ),
-              Text(
-                widget.product.name,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              Text(
-                '\$${widget.product.price}',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              Text(
-                "Vendedor: ${widget.product.seller}",
-                style: Theme.of(context).textTheme.bodyText1,
+          );
+        },
+        child: Container(
+          width: 250,
+          height: 350,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 3,
+                spreadRadius: 3,
+                color: Colors.black.withOpacity(0.1),
+                offset: const Offset(0, 0),
               ),
             ],
+          ),
+          margin: const EdgeInsets.all(10),
+          child: GridTile(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (_isLoading)
+                  CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                if (!_isLoading)
+                  Hero(
+                    tag: widget.product.id,
+                    child: SizedBox(
+                      height: 170,
+                      width: double.infinity,
+                      child: _imageUrl.isNotEmpty
+                          ? _image
+                          : Icon(
+                              Icons.image,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                    ),
+                  ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  widget.product.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  '\$${widget.product.price.toStringAsFixed(2)}',
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                Text(
+                  "Vendedor: ${widget.product.seller}",
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
+            ),
           ),
         ),
       ),

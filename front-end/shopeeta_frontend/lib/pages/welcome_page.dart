@@ -26,19 +26,32 @@ class WelcomePage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Shopeeta,\nO comércio virtual do H8.',
-                        style: Theme.of(context).textTheme.headline1!.copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                      ),
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset(
+                            '../assets/images/Logo_shopeeta_cart_on_top.png',
+                            width: 400,
+                            color: Colors.white),
+                        const SizedBox(height: 10),
+                        Text(
+                          'o comércio virtual do H8',
+                          style: TextStyle(
+                            fontSize: 37,
+                            fontStyle: FontStyle.italic,
+                            //fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ],
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        const SizedBox(
+                          height: 300,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                             bottom: 8.0,
@@ -46,13 +59,12 @@ class WelcomePage extends StatelessWidget {
                             left: 8.0,
                           ),
                           child: WelcomeButton(
+                            color: Theme.of(context).colorScheme.surface,
+                            textColor: Theme.of(context).colorScheme.onSurface,
                             text: 'Entrar',
                             onPressed: () => Navigator.of(context)
                                 .pushNamed(LoginPage.pageRouteName),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 120,
                         ),
                       ],
                     ),
