@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import './home_page.dart';
+import '../widgets/home_top_bar.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
@@ -31,28 +31,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            height: _searchBarHeight,
-            color: Theme.of(context).colorScheme.primary,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: _sideBarWidth,
-                  child: IconButton(
-                    icon: Image.asset(
-                        '../assets/images/Logo_shopeeta_header.png'),
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, HomePage.pageRouteName);
-                    },
-                  ),
-                ),
-                Expanded(child: Container()),
-              ],
-            ),
+          HomeTopBar(
+            sideBarWidth: _sideBarWidth,
+            searchBarHeight: _searchBarHeight,
+            context: context,
           ),
           Expanded(
             child: Padding(
