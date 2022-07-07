@@ -1,4 +1,5 @@
 from .models import User
+from .database import UserDatabase
 from django.utils.crypto import get_random_string
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -16,7 +17,7 @@ def verify_username(request):
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
         username = body.get('username')
-        repeated_username = User.objects.filter(username=username)
+        repeated_username = UserDatabase.fetch_user_by_username(username)
         if repeated_username:
             return Response({'status': 'fail'})
         else:
@@ -32,7 +33,7 @@ def verify_email(request):
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
         email = body.get('email')
-        repeated_email = User.objects.filter(email=email)
+        repeated_email = UserDatabase.fetch_user_by_email(email)
         if repeated_email:
             return Response({'status': 'fail'})
         else:
@@ -43,7 +44,7 @@ def verify_email(request):
 
 def check_user_validity(username, password):
     password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
-    user = User.objects.filter(username=username, password_hash=password_hash)
+    user = UserDatabase.fetch_user_by_username_and_password_hash(username, password_hash)
     if user:
         return True
     else:
@@ -51,13 +52,10 @@ def check_user_validity(username, password):
 
 
 def check_user_validity_by_token(token):
-    user = User.objects.filter(token=token)
+    user = UserDatabase.fetch_user_by_token(token)
     if user:
-        if user.last_time_login + datetime.timedelta(hours=1) > datetime.now():
-            return False
         return True
-    else:
-        return False
+    return False
 
 
 class UserView(APIView):
@@ -75,11 +73,7 @@ class UserView(APIView):
         userList = []
         for user in users:
             userdict = dict()
-            userdict['id'] = user.id
-            userdict['username'] = user.username
-            userdict['email'] = user.email
-            userdict['is_iniciativa'] = user.is_iniciativa
-            userdict['last_time_login'] = user.last_time_login
+            userdict = user.to_json_dict()
             userList.append(userdict)
 
         response['users'] = userList
@@ -103,13 +97,13 @@ class UserView(APIView):
             response['message'] = 'Dados insuficientes'
             return Response(response)
 
-        repeated_email = User.objects.filter(email=email)
+        repeated_email = UserDatabase.fetch_user_by_email(email)
         if repeated_email:
             response = dict()
             response['status'] = 'fail'
             response['message'] = 'Este e-mail já está cadastrado'
             return Response(response)
-        repeated_username = User.objects.filter(username=username)
+        repeated_username = UserDatabase.fetch_user_by_username(username)
         if repeated_username:
             response = dict()
             response['status'] = 'fail'
@@ -117,16 +111,9 @@ class UserView(APIView):
             return Response(response)
 
         password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
-        user = User(username=username,
-                    password_hash=password_hash, email=email)
-        user.save()
-        response = dict()
+        user = UserDatabase.create_user(username, password_hash, email)
+        response = user.to_json_dict()
         response['status'] = 'success'
-        response['id'] = user.id
-        response['username'] = user.username
-        response['email'] = user.email
-        response['is_iniciativa'] = user.is_iniciativa
-        response['last_time_login'] = user.last_time_login
         return Response(response)
 
     def put(self, request):
@@ -145,23 +132,16 @@ class UserView(APIView):
             return Response(response)
 
         if check_user_validity(username, password):
-            response = dict()
+            password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            user = UserDatabase.update_user_token(username, password_hash)
+            response = user.to_json_dict()
             response['status'] = 'success'
-            token = get_random_string(length=32)
-            user = User.objects.get(username=username)
-            user.token = token
-            user.last_time_login = datetime.now()
-            user.save()
-            response['id'] = user.id
-            response['username'] = user.username
-            response['email'] = user.email
-            response['is_iniciativa'] = user.is_iniciativa
             response['token'] = user.token
             return Response(response)
         else:
             response = dict()
             response['status'] = 'fail'
-            response['message'] = 'Token inválido'
+            response['message'] = 'Usuário inválido'
             return Response(response)
 
     def delete(self, request):
@@ -180,8 +160,8 @@ class UserView(APIView):
             return Response(response)
 
         if check_user_validity(username, password):
-            user = User.objects.get(username=username)
-            user.delete()
+            password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            UserDatabase.delete_user(username, password_hash)
             response = dict()
             response['status'] = 'success'
             return Response(response)

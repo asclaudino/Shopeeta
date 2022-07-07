@@ -2,7 +2,10 @@ from urllib import response
 
 from matplotlib.pyplot import text
 from numpy import product
-from .models import Product, Comment
+from .models import  Comment
+from math import prod
+from .models import Product
+from .database import ShopDatabase
 import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -130,17 +133,10 @@ class ProductView(APIView):
         """
         Get all products
         """
-        products = Product.objects.all()
-        products.order_by('-id')
+        products = ShopDatabase.fetch_all_products()
         products_list = []
         for product in products:
-            product_dict = {
-                'product_id': product.id,
-                'name': product.name,
-                'description': product.description,
-                'price': product.price,
-                'seller': product.seller.username
-            }
+            product_dict = product.to_json_dict()
             products_list.append(product_dict)
         response = dict()
         response['status'] = 'success'
@@ -161,17 +157,9 @@ class ProductView(APIView):
         password = body.get('password')
         if not check_user_validity(seller_username, password):
             return Response({'status': 'fail'})
-        seller = User.objects.get(username=seller_username)
-        product = Product(name=name, description=description,
-                          price=price, seller=seller)
-        product.image = None
-        product.save()
-        response = dict()
+        product = ShopDatabase.create_product(name, description, price, seller_username)
+        response = product.to_json_dict()
         response['status'] = 'success'
-        response['product_id'] = product.id
-        response['name'] = product.name
-        response['description'] = product.description
-        response['price'] = product.price
 
         return Response(response)
 
@@ -190,13 +178,11 @@ class ProductView(APIView):
             response['status'] = 'fail'
             response['message'] = 'Dados inválidos'
             return Response(response)
-        product = Product.objects.get(id=id)
-        if username != product.seller.username:
+        deleted = ShopDatabase.delete_product(id, username)
+        if not deleted:
             response['status'] = 'fail'
             response['message'] = 'Você não tem permissão para deletar este produto'
             return Response(response)
-
-        product.delete()
         response['status'] = 'success'
         return Response(response)
 
@@ -218,16 +204,10 @@ class ProductView(APIView):
             response['status'] = 'fail'
             response['message'] = 'Dados inválidos'
             return Response(response)
-        product = Product.objects.get(id=id)
-        product.name = name
-        product.description = description
-        product.price = price
-        product.save()
-        response['status'] = 'success'
-        response['id'] = product.id
-        response['name'] = product.name
-        response['description'] = product.description
-        response['price'] = product.price
+        
+        product, updated = ShopDatabase.update_product(id, name, description, price, seller)
+        response = product.to_json_dict()
+        response['status'] = 'success' if updated else 'fail'
         return Response(response)
 
 
@@ -240,7 +220,7 @@ class ProductImageView(APIView):
         """
         Get product image
         """
-        product = Product.objects.get(id=product_id)
+        product = ShopDatabase.fetch_product_by_id(product_id)
         response = dict()
 
         if not product.image:
@@ -259,7 +239,7 @@ class ProductImageView(APIView):
         Posts product image
         """
         image = request.FILES['image']
-        product = Product.objects.get(id=product_id)
+        product = ShopDatabase.fetch_product_by_id(product_id)
         product.image = image
         product.save()
         imageUrl = product.image.url
@@ -279,16 +259,10 @@ def search_products_by_name(request):
         body = json.loads(json_acceptable_string)
         name = body.get('name')
 
-        products = Product.objects.filter(name__contains=name)
+        products = ShopDatabase.fetch_products_by_name(name)
         products_list = []
         for product in products:
-            product_dict = {
-                'product_id': product.id,
-                'name': product.name,
-                'description': product.description,
-                'price': product.price,
-                'seller': product.seller.username
-            }
+            product_dict = product.to_json_dict()
             products_list.append(product_dict)
         return Response({'status': 'success', 'products': products_list})
 
@@ -296,24 +270,17 @@ def search_products_by_name(request):
 
 
 @api_view(['POST'])
-def search_products_by_seller(request):
+def search_products_by_seller_and_name(request):
     if request.method == 'POST':
         s = request.body.decode('utf-8')
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
         seller = body.get('seller')
-
-        products = Product.objects.filter(seller__username=seller)
+        name = body.get('name')
+        products = ShopDatabase.fetch_products_by_seller_and_name(name, seller)
         products_list = []
         for product in products:
-            product_dict = {
-                'product_id': product.id,
-                'name': product.name,
-                'description': product.description,
-                'price': product.price,
-                'seller': product.seller.username
-            }
-            print(type(product.id))
+            product_dict = product.to_json_dict()
             products_list.append(product_dict)
         return Response({'status': 'success', 'products': products_list})
 
