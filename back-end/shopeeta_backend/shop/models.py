@@ -11,3 +11,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_json_dict(self):
+        return {
+            'product_id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'price': self.price,
+            'seller': self.seller.username
+        }
