@@ -163,14 +163,15 @@ def search_products_by_name(request):
 
 
 @api_view(['POST'])
-def search_products_by_seller(request):
+def search_products_by_seller_and_name(request):
     if request.method == 'POST':
         s = request.body.decode('utf-8')
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
         seller = body.get('seller')
+        name = body.get('name')
 
-        products = Product.objects.filter(seller__username=seller)
+        products = Product.objects.filter(name__contains=name,seller__username=seller)
         products_list = []
         for product in products:
             product_dict = {

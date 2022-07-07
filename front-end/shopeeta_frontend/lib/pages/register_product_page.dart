@@ -9,7 +9,7 @@ import '../models/product.dart';
 import '../widgets/image_upload_field.dart';
 import './my_profile_page.dart';
 import './wait_for_connection_page.dart';
-import './home_page.dart';
+import '../widgets/home_top_bar.dart';
 
 class RegisterProductPage extends StatefulWidget {
   const RegisterProductPage({super.key});
@@ -108,35 +108,10 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            height: _searchBarHeight,
-            color: Theme.of(context).colorScheme.primary,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: _sideBarWidth,
-                  child: IconButton(
-                    icon: Image.asset(
-                        '../assets/images/Logo_shopeeta_header.png'),
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, HomePage.pageRouteName);
-                    },
-                  ),
-                ),
-                Expanded(child: Container()),
-                IconButton(
-                  color: Colors.white,
-                  icon: const Icon(Icons.shopping_cart),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/cart');
-                  },
-                ),
-              ],
-            ),
+          HomeTopBar(
+            sideBarWidth: _sideBarWidth,
+            searchBarHeight: _searchBarHeight,
+            context: context,
           ),
           IntrinsicHeight(
             child: Row(
