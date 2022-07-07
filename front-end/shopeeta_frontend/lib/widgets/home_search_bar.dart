@@ -125,6 +125,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
           ),
           IconButton(
             icon: const Icon(Icons.search),
+            padding: EdgeInsets.zero,
             color: Theme.of(context).colorScheme.onPrimary,
             onPressed: () {
               _searchProducts(form);
@@ -135,6 +136,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
           ),
           IconButton(
             icon: const Icon(Icons.shopping_cart),
+            padding: EdgeInsets.zero,
             color: Theme.of(context).colorScheme.onPrimary,
             onPressed: () {
               Navigator.pushNamed(context, '/cart');
@@ -142,6 +144,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
           ),
           PopupMenuButton<ProfileMenuOptions>(
             position: PopupMenuPosition.under,
+            padding: EdgeInsets.zero,
             offset: Offset(0, widget.searchBarHeight / 2),
             tooltip: "Opções de usuário",
             elevation: 10,
