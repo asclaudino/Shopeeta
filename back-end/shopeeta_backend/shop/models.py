@@ -14,16 +14,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-    
-    def to_json_dict(self):
-        return {
-            'product_id': self.id,
-            'name': self.name,
-            'description': self.description,
-            'price': self.price,
-            'seller': self.seller.username
-        }
-    
+        
 class Comment(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     user = models.ForeignKey('userbase.User', on_delete=models.CASCADE)
@@ -34,4 +25,11 @@ class Comment(models.Model):
     def __str__(self) -> str:
         return self.text
 
-    
+    def to_json_dict(self):
+        return {
+            'product_id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'price': self.price,
+            'seller': self.seller.username
+        }
