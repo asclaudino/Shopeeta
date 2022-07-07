@@ -146,16 +146,10 @@ def search_products_by_name(request):
         body = json.loads(json_acceptable_string)
         name = body.get('name')
 
-        products = Product.objects.filter(name__contains=name)
+        products = ShopDatabase.fetch_products_by_name(name)
         products_list = []
         for product in products:
-            product_dict = {
-                'product_id': product.id,
-                'name': product.name,
-                'description': product.description,
-                'price': product.price,
-                'seller': product.seller.username
-            }
+            product_dict = product.to_json_dict()
             products_list.append(product_dict)
         return Response({'status': 'success', 'products': products_list})
 
@@ -170,18 +164,10 @@ def search_products_by_seller_and_name(request):
         body = json.loads(json_acceptable_string)
         seller = body.get('seller')
         name = body.get('name')
-
-        products = Product.objects.filter(name__contains=name,seller__username=seller)
+        products = ShopDatabase.fetch_products_by_seller_and_name(name, seller)
         products_list = []
         for product in products:
-            product_dict = {
-                'product_id': product.id,
-                'name': product.name,
-                'description': product.description,
-                'price': product.price,
-                'seller': product.seller.username
-            }
-            print(type(product.id))
+            product_dict = product.to_json_dict()
             products_list.append(product_dict)
         return Response({'status': 'success', 'products': products_list})
 
