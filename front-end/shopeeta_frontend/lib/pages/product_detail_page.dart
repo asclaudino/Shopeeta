@@ -19,10 +19,9 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   final _searchBarHeight = 50.0;
-
   final _sideBarWidth = 200.0;
-
-  final _rightSideBarWidth = 600.0;
+  final _rightSideBarWidth = 360.0;
+  final _productWidth = 888.0;
 
   // String _toBeSearched = "";
   @override
@@ -38,27 +37,42 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.symmetric(
+                vertical: 50.0,
+              ),
               child: IntrinsicHeight(
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Column(
+                      child: Container(),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                        bottom: 120,
+                        left: 30,
+                        top: 30,
+                        right: 30,
+                      ),
+                      width: _productWidth,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 3,
+                            spreadRadius: 3,
+                            color: Colors.black.withOpacity(0.1),
+                            offset: const Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            height: 0.4 *
-                                (MediaQuery.of(context).size.height -
-                                    _searchBarHeight),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
-                            ),
+                          SizedBox(
+                            width: 0.45 * _productWidth,
                             child: Hero(
                               tag: widget.product.id,
                               child: widget.imageUrl.isEmpty
@@ -79,51 +93,88 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 30,
+                            width: 20,
                           ),
-                          Text(
-                            widget.product.description,
-                            style: Theme.of(context).textTheme.bodyText1,
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.product.name,
+                                  style: Theme.of(context).textTheme.headline2,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  widget.product.description,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    const VerticalDivider(
-                      width: 10,
-                      thickness: 0,
-                      color: Colors.black54,
+                    const SizedBox(
+                      width: 12,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 2,
-                        horizontal: 10,
-                      ),
+                      padding: const EdgeInsets.all(30),
                       width: _rightSideBarWidth,
-                      height: double.infinity,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 10),
-                            Text(
-                              widget.product.name,
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              "R\$ ${widget.product.price}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline2!
-                                  .copyWith(
-                                    fontSize: 16,
-                                    color: Colors.green,
-                                  ),
-                            ),
-                          ],
-                        ),
+                      //height: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 3,
+                            spreadRadius: 3,
+                            color: Colors.black.withOpacity(0.1),
+                            offset: const Offset(0, 0),
+                          ),
+                        ],
                       ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "R\$ ${widget.product.price.toStringAsFixed(2)}",
+                            style:
+                                Theme.of(context).textTheme.headline2!.copyWith(
+                                      fontSize: 30,
+                                      color: Colors.black,
+                                    ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text.rich(
+                            TextSpan(
+                              text: 'Este produto é vendido e entregue por ',
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: widget.product.seller,
+                                  style: const TextStyle(
+                                    //decoration: TextDecoration.italic,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text:
+                                      '. A Shopeeta não garante a sua compra, nem o pedido nem a entrega.',
+                                ),
+                                // can add more TextSpans here...
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(),
                     ),
                   ],
                 ),

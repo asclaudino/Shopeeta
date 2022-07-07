@@ -77,21 +77,37 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: OleoScriptSwashCaps
+    - family: RobotoFamilyFont
       fonts:
-        - asset: assets/fonts/OleoScriptSwashCapsFont/OleoScriptSwashCaps-Regular.ttf
-        - asset: assets/fonts/OleoScriptSwashCapsFont/OleoScriptSwashCaps-Bold.ttf
-          weight: 700
-    - family: PlayfairDisplay
-      fonts:
-        - asset: assets/fonts/PlayfairDisplayFont/PlayfairDisplay-Regular.ttf
-        - asset: assets/fonts/PlayfairDisplayFont/PlayfairDisplay-Italic.ttf
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-Regular.ttf
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-Italic.ttf
           style: italic
-        - asset: assets/fonts/PlayfairDisplayFont/PlayfairDisplay-Bold.ttf
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-Black.ttf
+          weight: 900
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-Bold.ttf
           weight: 700
-        - asset: assets/fonts/PlayfairDisplayFont/PlayfairDisplay-BoldItalic.ttf
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-Light.ttf
+          weight: 300
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-ThinItalic.ttf
+          style: italic
+          weight: 100
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-LightItalic.ttf
+          style: italic
+          weight: 300
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-MediumItalic.ttf
+          style: italic
+          weight: 500
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-BoldItalic.ttf
           style: italic
           weight: 700
+        - asset: assets/fonts/RobotoFamilyFont/Roboto-BlackItalic.ttf
+          style: italic
+          weight: 900
+       
 
   #
   # For details regarding fonts from package dependencies,

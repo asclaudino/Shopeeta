@@ -39,13 +39,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          primary: Color(0xFFEA5158),
+          primary: Color(0xFFf80132),
           onPrimary: Colors.white,
-          secondary: Color(0xFFA43941),
-          onSecondary: Colors.white,
+          secondary: Color(0xFFf8d808),
+          onSecondary: Color(0xFFA43941),
           error: Colors.black,
           onError: Colors.red,
-          background: Color(0xFFF4F6FC),
+          background: Color(0xFFf4f4f4),
           onBackground: Colors.black,
           surface: Colors.white,
           onSurface: Colors.black,
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           ),
           button: TextStyle(
             fontSize: 20.0,
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.bold,
             color: Colors.white,
             fontFamily: "RobotoFamilyFont",
           ),

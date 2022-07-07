@@ -6,8 +6,8 @@ import '../pages/home_page.dart';
 import '../helpers/http_requests.dart';
 import '../pages/my_profile_page.dart';
 
-class HomeSearchBar extends StatelessWidget {
-  HomeSearchBar({
+class HomeSearchBar extends StatefulWidget {
+  const HomeSearchBar({
     Key? key,
     required this.sideBarWidth,
     required this.searchBarHeight,
@@ -15,24 +15,31 @@ class HomeSearchBar extends StatelessWidget {
     required this.products,
     required this.changeProductsParent,
     required this.isMyPage,
-    this.userName = "",
+    required this.userName,
   }) : super(key: key);
 
   final double sideBarWidth;
   final double searchBarHeight;
   final BuildContext context;
-  List<Product> products;
-  Function changeProductsParent;
+  final List<Product> products;
+  final Function changeProductsParent;
   final bool isMyPage;
   final String userName;
 
+  @override
+  State<HomeSearchBar> createState() => _HomeSearchBarState();
+}
+
+class _HomeSearchBarState extends State<HomeSearchBar> {
   final form = GlobalKey<FormState>();
+
   String _toBeSearched = "";
 
   void _popUpMenuButtonAction(ProfileMenuOptions option) {
     switch (option) {
       case ProfileMenuOptions.myProfile:
-        Navigator.pushReplacementNamed(context, MyProfilePage.pageRouteName);
+        Navigator.pushReplacementNamed(
+            widget.context, MyProfilePage.pageRouteName);
         break;
       default:
         break;
@@ -41,14 +48,14 @@ class HomeSearchBar extends StatelessWidget {
 
   void _searchProducts(GlobalKey<FormState> form) async {
     dynamic response;
-    if (isMyPage) {
-      response =
-          await ShopHttpRequestHelper.searchMyProducts(userName, _toBeSearched);
+    if (widget.isMyPage) {
+      response = await ShopHttpRequestHelper.searchMyProducts(
+          widget.userName, _toBeSearched);
     } else {
       response = await ShopHttpRequestHelper.searchProducts(_toBeSearched);
     }
     if (response.success) {
-      changeProductsParent(response);
+      widget.changeProductsParent(response);
       form.currentState?.reset();
     }
   }
@@ -57,7 +64,7 @@ class HomeSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      height: searchBarHeight,
+      height: widget.searchBarHeight,
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary,
           boxShadow: [
@@ -72,7 +79,7 @@ class HomeSearchBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
-            width: sideBarWidth,
+            width: widget.sideBarWidth,
             child: IconButton(
               icon: Image.asset('../assets/images/Logo_shopeeta_header.png'),
               padding: EdgeInsets.zero,
@@ -118,6 +125,7 @@ class HomeSearchBar extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.search),
+            padding: EdgeInsets.zero,
             color: Theme.of(context).colorScheme.onPrimary,
             onPressed: () {
               _searchProducts(form);
@@ -128,6 +136,7 @@ class HomeSearchBar extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.shopping_cart),
+            padding: EdgeInsets.zero,
             color: Theme.of(context).colorScheme.onPrimary,
             onPressed: () {
               Navigator.pushNamed(context, '/cart');
@@ -135,7 +144,8 @@ class HomeSearchBar extends StatelessWidget {
           ),
           PopupMenuButton<ProfileMenuOptions>(
             position: PopupMenuPosition.under,
-            offset: Offset(0, searchBarHeight / 2),
+            padding: EdgeInsets.zero,
+            offset: Offset(0, widget.searchBarHeight / 2),
             tooltip: "Opções de usuário",
             elevation: 10,
             icon: const Icon(

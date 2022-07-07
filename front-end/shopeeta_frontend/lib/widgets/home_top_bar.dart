@@ -54,9 +54,12 @@ class HomeTopBar extends StatelessWidget {
               },
             ),
           ),
-          Expanded(child: Container()),
+          Expanded(
+            child: Container(),
+          ),
           IconButton(
             icon: const Icon(Icons.shopping_cart),
+            padding: EdgeInsets.zero,
             color: Theme.of(context).colorScheme.onPrimary,
             onPressed: () {
               Navigator.pushNamed(context, '/cart');
@@ -65,6 +68,7 @@ class HomeTopBar extends StatelessWidget {
           PopupMenuButton<ProfileMenuOptions>(
             position: PopupMenuPosition.under,
             offset: Offset(0, searchBarHeight / 2),
+            padding: EdgeInsets.zero,
             tooltip: "Opções de usuário",
             elevation: 10,
             icon: const Icon(
