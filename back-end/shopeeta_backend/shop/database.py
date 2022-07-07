@@ -41,3 +41,13 @@ class ShopDatabase:
         product.save()
         return product, True
 
+
+    @staticmethod
+    def fetch_products_by_name(name):
+        products = Product.objects.filter(name__contains=name)
+        return products
+    
+    @staticmethod
+    def fetch_products_by_seller_and_name(name, seller_username):
+        products = Product.objects.filter(name__contains=name, seller__username=seller_username)
+        return products
