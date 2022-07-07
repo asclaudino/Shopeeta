@@ -122,7 +122,24 @@ class ShopHttpRequestHelper {
       String userName, String password) async {
     var response = await http.post(
       Uri.parse('$baseBackEndShopUrl/get_sellers_products/'),
-      body: '{"seller": "$userName"}',
+      body: '{"seller": "$userName", "name": ""}',
+    );
+    if (json.decode(response.body)["status"] == "success") {
+      var products =
+          (json.decode(utf8.decode(response.bodyBytes))["products"] as List)
+              .map((i) => Product.fromJson(i))
+              .toList();
+      return Pair(products, true);
+    } else {
+      return Pair(List<Product>.empty(), false);
+    }
+  }
+
+  static Future<Pair<List<Product>, bool>> searchMyProducts(
+      String userName, String password, String toBeSearched) async {
+    var response = await http.post(
+      Uri.parse('$baseBackEndShopUrl/get_sellers_products/'),
+      body: '{"seller": "$userName", "name": "$toBeSearched"}',
     );
     if (json.decode(response.body)["status"] == "success") {
       var products =

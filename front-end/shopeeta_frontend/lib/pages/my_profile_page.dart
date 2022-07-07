@@ -61,7 +61,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
   }
 
   void _searchProducts(GlobalKey<FormState> form) async {
-    var response = await ShopHttpRequestHelper.searchProducts(_toBeSearched);
+    //var response = await ShopHttpRequestHelper.searchProducts(_toBeSearched);
+    var response = await ShopHttpRequestHelper.searchMyProducts(
+        userName, password, _toBeSearched);
     if (response.success) {
       setState(() {
         _products = response.content;
