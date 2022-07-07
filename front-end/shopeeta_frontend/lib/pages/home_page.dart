@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _searchProductsPage(response) async {
+  void _changeProductsPage(response) async {
     setState(() {
       _products = response.content;
     });
@@ -82,7 +82,8 @@ class _HomePageState extends State<HomePage> {
             products: _products,
             sideBarWidth: _sideBarWidth,
             searchBarHeight: _searchBarHeight,
-            searchProductsParent: _searchProductsPage,
+            changeProductsParent: _changeProductsPage,
+            isMyPage: false,
           ),
           IntrinsicHeight(
             child: Row(

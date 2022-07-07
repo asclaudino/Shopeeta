@@ -13,14 +13,18 @@ class HomeSearchBar extends StatelessWidget {
     required this.searchBarHeight,
     required this.context,
     required this.products,
-    required this.searchProductsParent,
+    required this.changeProductsParent,
+    required this.isMyPage,
+    this.userName = "",
   }) : super(key: key);
 
   final double sideBarWidth;
   final double searchBarHeight;
   final BuildContext context;
   List<Product> products;
-  dynamic searchProductsParent;
+  Function changeProductsParent;
+  final bool isMyPage;
+  final String userName;
 
   final form = GlobalKey<FormState>();
   String _toBeSearched = "";
@@ -36,9 +40,15 @@ class HomeSearchBar extends StatelessWidget {
   }
 
   void _searchProducts(GlobalKey<FormState> form) async {
-    var response = await ShopHttpRequestHelper.searchProducts(_toBeSearched);
+    dynamic response;
+    if (isMyPage) {
+      response =
+          await ShopHttpRequestHelper.searchMyProducts(userName, _toBeSearched);
+    } else {
+      response = await ShopHttpRequestHelper.searchProducts(_toBeSearched);
+    }
     if (response.success) {
-      searchProductsParent(response);
+      changeProductsParent(response);
       form.currentState?.reset();
     }
   }

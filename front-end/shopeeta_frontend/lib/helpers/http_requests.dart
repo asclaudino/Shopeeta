@@ -136,7 +136,7 @@ class ShopHttpRequestHelper {
   }
 
   static Future<Pair<List<Product>, bool>> searchMyProducts(
-      String userName, String password, String toBeSearched) async {
+      String userName, String toBeSearched) async {
     var response = await http.post(
       Uri.parse('$baseBackEndShopUrl/get_sellers_products/'),
       body: '{"seller": "$userName", "name": "$toBeSearched"}',
