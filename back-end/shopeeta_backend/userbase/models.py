@@ -15,3 +15,11 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
+    def to_json_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'is_iniciativa': self.is_iniciativa,
+            'last_time_login': self.last_time_login
+        }
