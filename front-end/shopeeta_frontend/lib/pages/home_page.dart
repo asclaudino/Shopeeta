@@ -84,6 +84,7 @@ class _HomePageState extends State<HomePage> {
             searchBarHeight: _searchBarHeight,
             changeProductsParent: _changeProductsPage,
             isMyPage: false,
+            userName: userName,
           ),
           IntrinsicHeight(
             child: Row(
