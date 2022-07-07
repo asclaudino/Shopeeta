@@ -123,7 +123,9 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
-                Expanded(child: Container()),
+                Expanded(
+                  child: Container(),
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width / 2,
                   decoration: BoxDecoration(
@@ -163,7 +165,9 @@ class _HomePageState extends State<HomePage> {
                     _searchProducts(form);
                   },
                 ),
-                Expanded(child: Container()),
+                Expanded(
+                  child: Container(),
+                ),
                 IconButton(
                   icon: const Icon(Icons.shopping_cart),
                   color: Theme.of(context).colorScheme.onPrimary,
