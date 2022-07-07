@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import './wait_for_connection_page.dart';
 import './home_page.dart';
+import '../models/pop_up_menu_button_enums.dart';
 import './register_product_page.dart';
 import '../models/product.dart';
 import '../widgets/my_alert_dialog.dart';
@@ -26,6 +27,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
   String _toBeSearched = "";
   var _loadedProducts = false;
   List<Product> _products = [];
+
+  void _popUpMenuButtonAction(ProfileMenuOptions option) {
+    switch (option) {
+      case ProfileMenuOptions.myProfile:
+        Navigator.pushReplacementNamed(context, MyProfilePage.pageRouteName);
+        break;
+      default:
+        break;
+    }
+  }
 
   void _verifyIfIsLogedIn() async {
     var response =
@@ -86,7 +97,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
           Container(
             padding: const EdgeInsets.all(10),
             height: _searchBarHeight,
-            color: Theme.of(context).colorScheme.primary,
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 3,
+                    spreadRadius: 3,
+                    color: Colors.black.withOpacity(0.2),
+                    offset: const Offset(0, 0),
+                  ),
+                ]),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -102,7 +122,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     },
                   ),
                 ),
-                Expanded(child: Container()),
+                Expanded(
+                  child: Container(),
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width / 2,
                   decoration: BoxDecoration(
@@ -142,21 +164,38 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     _searchProducts(form);
                   },
                 ),
-                Expanded(child: Container()),
+                Expanded(
+                  child: Container(),
+                ),
                 IconButton(
                   icon: const Icon(Icons.shopping_cart),
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   onPressed: () {
                     Navigator.pushNamed(context, '/cart');
                   },
                 ),
-                IconButton(
-                  icon: const Icon(Icons.account_circle_rounded),
-                  color: Colors.white,
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, MyProfilePage.pageRouteName);
+                PopupMenuButton<ProfileMenuOptions>(
+                  position: PopupMenuPosition.under,
+                  offset: Offset(0, _searchBarHeight / 2),
+                  tooltip: "Opções de usuário",
+                  elevation: 10,
+                  icon: const Icon(
+                    Icons.account_circle_rounded,
+                    color: Colors.white,
+                  ),
+                  onSelected: (ProfileMenuOptions option) {
+                    _popUpMenuButtonAction(option);
                   },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: ProfileMenuOptions.myProfile,
+                      child: Text('Meu Perfil'),
+                    ),
+                    const PopupMenuItem(
+                      value: ProfileMenuOptions.logout,
+                      child: Text('Sair'),
+                    ),
+                  ],
                 ),
               ],
             ),
