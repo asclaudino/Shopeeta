@@ -54,7 +54,9 @@ class HomeTopBar extends StatelessWidget {
               },
             ),
           ),
-          Expanded(child: Container()),
+          Expanded(
+            child: Container(),
+          ),
           IconButton(
             icon: const Icon(Icons.shopping_cart),
             padding: EdgeInsets.zero,
