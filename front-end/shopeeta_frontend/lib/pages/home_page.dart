@@ -98,7 +98,16 @@ class _HomePageState extends State<HomePage> {
           Container(
             padding: const EdgeInsets.all(10),
             height: _searchBarHeight,
-            color: Theme.of(context).colorScheme.primary,
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 3,
+                    spreadRadius: 3,
+                    color: Colors.black.withOpacity(0.2),
+                    offset: const Offset(0, 0),
+                  ),
+                ]),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

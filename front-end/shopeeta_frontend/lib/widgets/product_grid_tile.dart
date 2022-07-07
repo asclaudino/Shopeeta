@@ -92,8 +92,12 @@ class _ProductGridTileState extends State<ProductGridTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 if (_isLoading)
-                  CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.primary,
+                  Container(
+                    height: 170,
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                 if (!_isLoading)
                   Hero(
@@ -112,12 +116,15 @@ class _ProductGridTileState extends State<ProductGridTile> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  widget.product.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  style: Theme.of(context).textTheme.bodyText1,
+                SizedBox(
+                  height: 30,
+                  child: Text(
+                    widget.product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
