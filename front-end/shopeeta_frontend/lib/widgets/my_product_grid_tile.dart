@@ -92,7 +92,7 @@ class _MyProductGridTileState extends State<MyProductGridTile> {
               height: 10,
             ),
             Text(
-              '\$${widget.product.price}',
+              'R\$ ${widget.product.price}',
               style: Theme.of(context).textTheme.headline2,
             ),
             Expanded(

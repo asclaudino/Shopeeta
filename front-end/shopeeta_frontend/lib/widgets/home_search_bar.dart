@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/pop_up_menu_button_enums.dart';
 import '../models/product.dart';
+import '../models/my_tuples.dart';
 import '../pages/home_page.dart';
 import '../helpers/http_requests.dart';
 import '../pages/my_profile_page.dart';
@@ -41,13 +42,19 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
         Navigator.pushReplacementNamed(
             widget.context, MyProfilePage.pageRouteName);
         break;
+      case ProfileMenuOptions.logout:
+        Navigator.popUntil(
+          context,
+          ModalRoute.withName('/'),
+        );
+        break;
       default:
         break;
     }
   }
 
   void _searchProducts(GlobalKey<FormState> form) async {
-    dynamic response;
+    Pair<List<Product>, bool> response;
     if (widget.isMyPage) {
       response = await ShopHttpRequestHelper.searchMyProducts(
           widget.userName, _toBeSearched);

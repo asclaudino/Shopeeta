@@ -121,6 +121,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     child: Wrap(
                       children: _products.map((product) {
                         return MyProductGridTile(
+                          key: UniqueKey(),
                           product: product,
                           deleteProduct: () {
                             showDialog(
