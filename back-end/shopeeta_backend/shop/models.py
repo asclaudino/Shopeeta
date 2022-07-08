@@ -1,7 +1,5 @@
 from django.db import models
-from django.dispatch import receiver
 from django.core.validators import MinValueValidator, MaxValueValidator
-from numpy import maximum
 
 # Create your models here.
 
@@ -21,7 +19,8 @@ class Product(models.Model):
             'name': self.name,
             'description': self.description,
             'price': self.price,
-            'seller': self.seller.username
+            'seller': self.seller.username,
+            'seller_email': self.seller.email,
         }
     
 class Comment(models.Model):

@@ -3,6 +3,7 @@ import 'package:shopeeta_frontend/pages/login_page.dart';
 
 import '../models/user.dart';
 import '../helpers/http_requests.dart';
+import '../widgets/welcome_button.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -60,6 +61,9 @@ class _SigninPageState extends State<SigninPage> {
               width: 400,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(15),
+                ),
                 boxShadow: [
                   BoxShadow(
                     blurRadius: 3,
@@ -201,45 +205,45 @@ class _SigninPageState extends State<SigninPage> {
                       height: 30,
                     ),
                     if (!_accountCreated)
-                      TextButton(
-                        onPressed: () {
-                          _saveForm();
-                        },
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    if (!_accountCreated)
+                      WelcomeButton(
+                        text: "Cadastrar!",
+                        color: Theme.of(context).colorScheme.secondary,
+                        textColor: Colors.black,
+                        onPressed: () => _saveForm(),
+                        iconChosen: Icons.person_add,
+                      ),
+                    if (_accountCreated)
+                      SizedBox(
+                        height: 30,
                         child: Text(
-                          "Cadastrar!",
-                          style: Theme.of(context).textTheme.button!.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                          "Conta criada com sucesso!\n",
+                          style: Theme.of(context).textTheme.bodyText1!,
                         ),
                       ),
                     if (_accountCreated)
-                      Text(
-                        "Conta criada com sucesso!",
-                        style: Theme.of(context).textTheme.bodyText1!,
-                      ),
-                    if (_accountCreated)
-                      const SizedBox(
-                        height: 10,
-                      ),
-                    if (_accountCreated)
-                      TextButton(
+                      WelcomeButton(
+                        text: "Fazer login!",
+                        color: Theme.of(context).colorScheme.secondary,
+                        textColor: Colors.black,
                         onPressed: () {
                           Navigator.of(context)
                               .pushReplacementNamed(LoginPage.pageRouteName);
                         },
-                        child: Text(
-                          "Fazer login!",
-                          style: Theme.of(context).textTheme.button!.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                        ),
+                        iconChosen: Icons.person_add,
                       ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                   ],
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 40),
         ],
       ),
     );

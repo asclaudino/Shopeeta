@@ -1,10 +1,8 @@
 from .models import User
 from .database import UserDatabase
-from django.utils.crypto import get_random_string
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from datetime import datetime
 import json
 import hashlib
 # Create your views here.

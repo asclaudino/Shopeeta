@@ -65,6 +65,7 @@ class WelcomePage extends StatelessWidget {
                             text: 'Entrar',
                             onPressed: () => Navigator.of(context)
                                 .pushNamed(LoginPage.pageRouteName),
+                            iconChosen: Icons.login,
                           ),
                         ),
                       ],

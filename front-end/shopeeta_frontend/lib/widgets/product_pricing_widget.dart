@@ -19,6 +19,9 @@ class ProductPricingWidget extends StatelessWidget {
       //height: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(15),
+        ),
         boxShadow: [
           BoxShadow(
             blurRadius: 3,
@@ -38,6 +41,49 @@ class ProductPricingWidget extends StatelessWidget {
                   fontSize: 30,
                   color: Colors.black,
                 ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(15),
+            width: rightSideBarWidth - 20,
+            //height: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(5),
+              ),
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.attach_money,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                    Text(
+                      "Quer comprar?",
+                      style: Theme.of(context).textTheme.headline2!.copyWith(
+                            fontSize: 20,
+                          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "Entre em contato com o vendedor por meio do seguinte endereço de email: ${product.sellerEmail}",
+                  style: Theme.of(context).textTheme.headline2!.copyWith(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.black,
+                      ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 20),
           Text.rich(

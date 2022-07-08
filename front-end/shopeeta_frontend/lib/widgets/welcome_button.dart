@@ -6,11 +6,13 @@ class WelcomeButton extends StatelessWidget {
       required this.text,
       required this.onPressed,
       required this.color,
-      required this.textColor});
+      required this.textColor,
+      required this.iconChosen});
   final Function onPressed;
   final String text;
   final Color color;
   final Color textColor;
+  final IconData iconChosen;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class WelcomeButton extends StatelessWidget {
                   width: 20,
                 ),
                 Icon(
-                  Icons.arrow_forward,
+                  iconChosen,
                   color: textColor,
                 ),
               ],

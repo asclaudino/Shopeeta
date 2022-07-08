@@ -39,16 +39,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             context: context,
           ),
           Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 30.0,
+            padding: const EdgeInsets.only(
+              top: 3.0,
             ),
-            height: MediaQuery.of(context).size.height - _searchBarHeight - 20,
+            height: MediaQuery.of(context).size.height - _searchBarHeight - 3,
             child: IntrinsicHeight(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     const SizedBox(
-                      height: 5,
+                      height: 35,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           imageUrl: widget.imageUrl,
                         ),
                         const SizedBox(
-                          width: 12,
+                          width: 20,
                         ),
                         ProductPricingWidget(
                           rightSideBarWidth: _rightSideBarWidth,
@@ -74,13 +74,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 50.0,
+                      padding: const EdgeInsets.only(
+                        top: 40.0,
                       ),
                       child: CommentSection(
                         width: _productWidth + _rightSideBarWidth + 12,
                         product: widget.product,
                       ),
+                    ),
+                    const SizedBox(
+                      height: 35,
                     ),
                   ],
                 ),

@@ -46,6 +46,7 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
           description: description,
           price: price,
           seller: name,
+          sellerEmail: "",
           id: -1, // id will be set by the server
         ),
         userName,
@@ -130,6 +131,9 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                     width: 800.0,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(15),
+                      ),
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 3,
@@ -186,7 +190,7 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                             ),
                             TextFormField(
                               minLines: 4,
-                              maxLines: null,
+                              maxLines: 4,
                               keyboardType: TextInputType.multiline,
                               textInputAction: TextInputAction.done,
                               decoration: const InputDecoration(
@@ -271,7 +275,7 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                                     context, MyProfilePage.pageRouteName),
                                 icon: const Icon(
                                   Icons.reply_sharp,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   size: 18,
                                 ),
                                 label: const SizedBox(

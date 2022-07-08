@@ -59,9 +59,12 @@ class _CommentSectionState extends State<CommentSection> {
         right: 30,
       ),
       width: widget.width,
-      height: 440,
+      height: 500,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(15),
+        ),
         boxShadow: [
           BoxShadow(
             blurRadius: 3,
@@ -84,19 +87,11 @@ class _CommentSectionState extends State<CommentSection> {
           ),
           ..._comments.map((e) {
             return Container(
-              height: 100,
+              height: 150,
               width: double.infinity,
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(30),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 3,
-                    spreadRadius: 3,
-                    color: Colors.black.withOpacity(0.1),
-                    offset: const Offset(0, 0),
-                  ),
-                ],
+                color: Theme.of(context).colorScheme.background,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.max,

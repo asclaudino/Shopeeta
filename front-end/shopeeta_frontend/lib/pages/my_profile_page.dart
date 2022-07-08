@@ -102,10 +102,18 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       const SizedBox(
                         height: 45,
                       ),
+                      Icon(
+                        Icons.account_circle_rounded,
+                        size: 180,
+                        color: Colors.black.withOpacity(0.3),
+                      ),
                       ElevatedButton.icon(
                         onPressed: () => Navigator.of(context)
                             .pushNamed(RegisterProductPage.pageRouteName),
-                        icon: const Icon(Icons.add, size: 18),
+                        icon: const Icon(
+                          Icons.add,
+                          size: 18,
+                        ),
                         label: const SizedBox(
                           width: 120.0,
                           child: Text.rich(
@@ -123,8 +131,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         height: 10,
                       ),
                       ElevatedButton.icon(
-                        onPressed: () => Navigator.of(context)
-                            .pushNamed(RegisterProductPage.pageRouteName),
+                        onPressed: () {},
                         icon: const Icon(
                           Icons.person_add_alt_1,
                           color: Colors.black,

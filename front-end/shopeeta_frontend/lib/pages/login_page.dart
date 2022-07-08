@@ -51,10 +51,13 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: Container(
-          height: 500,
+          height: 550,
           width: 700,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(15),
+            ),
             boxShadow: [
               BoxShadow(
                 blurRadius: 3,
@@ -149,20 +152,13 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(
                               height: 30,
                             ),
-                            TextButton(
-                              onPressed: () {
-                                _saveForm();
-                              },
-                              child: Text(
-                                "Entrar",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .button!
-                                    .copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                              ),
+                            WelcomeButton(
+                              color: Theme.of(context).colorScheme.primary,
+                              textColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              text: 'Entrar',
+                              onPressed: () => _saveForm(),
+                              iconChosen: Icons.login,
                             ),
                           ],
                         ),
@@ -193,12 +189,13 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       WelcomeButton(
                         text: "Cadastrar-se",
-                        color: Theme.of(context).colorScheme.primary,
-                        textColor: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).colorScheme.secondary,
+                        textColor: Colors.black,
                         onPressed: () {
                           Navigator.of(context)
                               .pushNamed(SigninPage.pageRouteName);
                         },
+                        iconChosen: Icons.person_add,
                       ),
                     ],
                   ),

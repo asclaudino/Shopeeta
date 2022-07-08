@@ -59,24 +59,13 @@ class _CommentPostState extends State<CommentPost> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
-        bottom: 10,
-        left: 30,
-        top: 10,
-        right: 30,
+      padding: const EdgeInsets.all(
+        30,
       ),
       width: widget.width,
-      height: 60,
+      //height: 200,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 3,
-            spreadRadius: 3,
-            color: Colors.black.withOpacity(0.1),
-            offset: const Offset(0, 0),
-          ),
-        ],
+        color: Theme.of(context).colorScheme.background,
       ),
       child: Form(
         key: _formKey,
@@ -85,8 +74,12 @@ class _CommentPostState extends State<CommentPost> {
           children: [
             Expanded(
               child: TextFormField(
+                minLines: 4,
+                maxLines: 4,
+                keyboardType: TextInputType.multiline,
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
                   labelText: 'Seu Comentário',
                 ),
                 validator: (value) {
@@ -100,11 +93,29 @@ class _CommentPostState extends State<CommentPost> {
                 },
               ),
             ),
-            TextButton(
-              child: const Text("Postar!"),
-              onPressed: () {
-                //_postComment();
-              },
+            const SizedBox(
+              width: 50,
+            ),
+            ElevatedButton.icon(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.comment,
+                color: Colors.black,
+                size: 18,
+              ),
+              label: const Text.rich(
+                TextSpan(
+                  text: "Postar comentário!",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).colorScheme.secondary,
+              ),
             ),
           ],
         ),

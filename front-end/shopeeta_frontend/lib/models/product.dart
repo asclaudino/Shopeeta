@@ -3,6 +3,7 @@ class Product {
   String description;
   double price;
   String seller;
+  String sellerEmail;
   int id;
 
   Product({
@@ -11,6 +12,7 @@ class Product {
     required this.description,
     required this.price,
     required this.seller,
+    required this.sellerEmail,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class Product {
       description: json['description'] as String,
       price: json['price'] as double,
       seller: json['seller'] as String,
+      sellerEmail: json['seller_email'] as String,
     );
   }
 }

@@ -16,15 +16,15 @@ class ProductDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
-        bottom: 120,
-        left: 30,
-        top: 30,
-        right: 30,
+      padding: const EdgeInsets.all(
+        30,
       ),
       width: productWidth,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(15),
+        ),
         boxShadow: [
           BoxShadow(
             blurRadius: 3,

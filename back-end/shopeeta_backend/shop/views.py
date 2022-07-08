@@ -3,8 +3,6 @@ from urllib import response
 from matplotlib.pyplot import text
 from numpy import product
 from .models import  Comment
-from math import prod
-from .models import Product
 from .database import ShopDatabase
 import json
 from rest_framework.decorators import api_view
