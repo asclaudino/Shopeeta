@@ -131,7 +131,7 @@ class _ProductGridTileState extends State<ProductGridTile> {
                   height: 10,
                 ),
                 Text(
-                  '\$${widget.product.price.toStringAsFixed(2)}',
+                  'R\$ ${widget.product.price.toStringAsFixed(2).replaceAll('.', ',')}',
                   style: Theme.of(context).textTheme.headline2,
                 ),
                 Expanded(

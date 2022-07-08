@@ -17,7 +17,7 @@ def verify_username(request):
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
         username = body.get('username')
-        repeated_username = UserDatabase.fetch_user_by_username(username)
+        repeated_username = UserDatabase.fetch_users_by_username(username)
         if repeated_username:
             return Response({'status': 'fail'})
         else:
@@ -33,7 +33,7 @@ def verify_email(request):
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
         email = body.get('email')
-        repeated_email = UserDatabase.fetch_user_by_email(email)
+        repeated_email = UserDatabase.fetch_users_by_email(email)
         if repeated_email:
             return Response({'status': 'fail'})
         else:
@@ -97,13 +97,13 @@ class UserView(APIView):
             response['message'] = 'Dados insuficientes'
             return Response(response)
 
-        repeated_email = UserDatabase.fetch_user_by_email(email)
+        repeated_email = UserDatabase.fetch_users_by_email(email)
         if repeated_email:
             response = dict()
             response['status'] = 'fail'
             response['message'] = 'Este e-mail já está cadastrado'
             return Response(response)
-        repeated_username = UserDatabase.fetch_user_by_username(username)
+        repeated_username = UserDatabase.fetch_users_by_username(username)
         if repeated_username:
             response = dict()
             response['status'] = 'fail'

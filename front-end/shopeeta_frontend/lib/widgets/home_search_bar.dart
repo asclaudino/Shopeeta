@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shopeeta_frontend/models/filter.dart';
 
 import '../models/pop_up_menu_button_enums.dart';
 import '../models/product.dart';
+import '../models/my_tuples.dart';
 import '../pages/home_page.dart';
 import '../helpers/http_requests.dart';
 import '../pages/my_profile_page.dart';
@@ -16,12 +18,14 @@ class HomeSearchBar extends StatefulWidget {
     required this.changeProductsParent,
     required this.isMyPage,
     required this.userName,
+    required this.filters,
   }) : super(key: key);
 
   final double sideBarWidth;
   final double searchBarHeight;
   final BuildContext context;
   final List<Product> products;
+  final List<Filter> filters;
   final Function changeProductsParent;
   final bool isMyPage;
   final String userName;
@@ -41,18 +45,25 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
         Navigator.pushReplacementNamed(
             widget.context, MyProfilePage.pageRouteName);
         break;
+      case ProfileMenuOptions.logout:
+        Navigator.popUntil(
+          context,
+          ModalRoute.withName('/'),
+        );
+        break;
       default:
         break;
     }
   }
 
   void _searchProducts(GlobalKey<FormState> form) async {
-    dynamic response;
+    Pair<List<Product>, bool> response;
     if (widget.isMyPage) {
       response = await ShopHttpRequestHelper.searchMyProducts(
           widget.userName, _toBeSearched);
     } else {
-      response = await ShopHttpRequestHelper.searchProducts(_toBeSearched);
+      response = await ShopHttpRequestHelper.searchProducts(
+          _toBeSearched, widget.filters);
     }
     if (response.success) {
       widget.changeProductsParent(response);
