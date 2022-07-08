@@ -22,7 +22,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
   String userName = "";
   String password = "";
   final _searchBarHeight = 50.0;
-  final _sideBarWidth = 200.0;
+  final _sideBarWidth = 220.0;
+  final _tilesMaxWidth = 1100.0;
   var _loadedProducts = false;
   List<Product> _products = [];
 
@@ -88,6 +89,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
           IntrinsicHeight(
             child: Row(
               children: [
+                Expanded(
+                  child: Container(),
+                ),
                 SizedBox(
                   width: _sideBarWidth,
                   height: MediaQuery.of(context).size.height - _searchBarHeight,
@@ -106,42 +110,48 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     ],
                   ),
                 ),
-                const VerticalDivider(
-                  indent: 10,
-                  endIndent: 10,
-                  width: 10,
-                  thickness: 0,
-                  color: Colors.black54,
-                ),
                 Container(
-                  padding: const EdgeInsets.all(30),
+                  constraints: BoxConstraints(
+                    maxWidth: _tilesMaxWidth,
+                  ),
+                  padding: const EdgeInsets.only(top: 3),
                   width: MediaQuery.of(context).size.width - _sideBarWidth - 10,
                   height: MediaQuery.of(context).size.height - _searchBarHeight,
                   child: SingleChildScrollView(
-                    child: Wrap(
-                      children: _products.map((product) {
-                        return MyProductGridTile(
-                          product: product,
-                          deleteProduct: () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (_) => MyAlertDialog(
-                                text:
-                                    "Tem certeza de que quer deletar seu produto? Esta ação não pode ser desfeita.",
-                                title: "Deletar produto?",
-                                onConfirmText: "Deletar",
-                                onConfirm: () {
-                                  _deleteProduct(product);
-                                  Navigator.pop(context);
-                                },
-                              ),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Wrap(
+                          children: _products.map((product) {
+                            return MyProductGridTile(
+                              product: product,
+                              deleteProduct: () {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) => MyAlertDialog(
+                                    text:
+                                        "Tem certeza de que quer deletar seu produto? Esta ação não pode ser desfeita.",
+                                    title: "Deletar produto?",
+                                    onConfirmText: "Deletar",
+                                    onConfirm: () {
+                                      _deleteProduct(product);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                );
+                              },
                             );
-                          },
-                        );
-                      }).toList(),
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   ),
+                ),
+                Expanded(
+                  child: Container(),
                 ),
               ],
             ),

@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   String password = "";
   final _searchBarHeight = 50.0;
   final _sideBarWidth = 220.0;
+  final _tilesMaxWidth = 1100.0;
   var _loadedProducts = false;
   List<Product> _products = [];
   final List<Filter> _filters = [
@@ -104,20 +105,26 @@ class _HomePageState extends State<HomePage> {
                   changeFilterState: _changeFilterState,
                 ),
                 Container(
-                  constraints: const BoxConstraints(
-                    minWidth: 100,
-                    maxWidth: 1100,
+                  constraints: BoxConstraints(
+                    maxWidth: _tilesMaxWidth,
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 30),
+                  padding: const EdgeInsets.only(top: 3),
                   width: MediaQuery.of(context).size.width - _sideBarWidth - 10,
                   height: MediaQuery.of(context).size.height - _searchBarHeight,
                   child: SingleChildScrollView(
-                    child: Wrap(
-                      children: _products.map((product) {
-                        return ProductGridTile(
-                          product: product,
-                        );
-                      }).toList(),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Wrap(
+                          children: _products.map((product) {
+                            return ProductGridTile(
+                              product: product,
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   ),
                 ),
