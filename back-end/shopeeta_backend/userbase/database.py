@@ -8,6 +8,11 @@ class UserDatabase:
     def fetch_user_by_username(username):
         user = User.objects.get(username=username)
         return user
+    
+    @staticmethod
+    def fetch_users_by_username(username):
+        users = User.objects.filter(username=username)
+        return users
 
     @staticmethod
     def fetch_user_by_id(user_id):
@@ -18,6 +23,11 @@ class UserDatabase:
     def fetch_user_by_email(email):
         user = User.objects.get(email=email)
         return user
+    
+    @staticmethod
+    def fetch_users_by_email(email):
+        users = User.objects.filter(email=email)
+        return users
 
     @staticmethod
     def fetch_user_by_token(token):

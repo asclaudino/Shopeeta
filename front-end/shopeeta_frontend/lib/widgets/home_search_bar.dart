@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopeeta_frontend/models/filter.dart';
 
 import '../models/pop_up_menu_button_enums.dart';
 import '../models/product.dart';
@@ -17,12 +18,14 @@ class HomeSearchBar extends StatefulWidget {
     required this.changeProductsParent,
     required this.isMyPage,
     required this.userName,
+    required this.filters,
   }) : super(key: key);
 
   final double sideBarWidth;
   final double searchBarHeight;
   final BuildContext context;
   final List<Product> products;
+  final List<Filter> filters;
   final Function changeProductsParent;
   final bool isMyPage;
   final String userName;
@@ -59,7 +62,8 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
       response = await ShopHttpRequestHelper.searchMyProducts(
           widget.userName, _toBeSearched);
     } else {
-      response = await ShopHttpRequestHelper.searchProducts(_toBeSearched);
+      response = await ShopHttpRequestHelper.searchProducts(
+          _toBeSearched, widget.filters);
     }
     if (response.success) {
       widget.changeProductsParent(response);
