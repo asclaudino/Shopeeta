@@ -105,12 +105,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         onPressed: () => Navigator.of(context)
                             .pushNamed(RegisterProductPage.pageRouteName),
                         icon: const Icon(Icons.add, size: 18),
-                        label: const Text.rich(
-                          TextSpan(
-                            text: "adicionar produto",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                        label: const SizedBox(
+                          width: 120.0,
+                          child: Text.rich(
+                            TextSpan(
+                              text: "adicionar produto",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
@@ -122,17 +125,20 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         onPressed: () => Navigator.of(context)
                             .pushNamed(RegisterProductPage.pageRouteName),
                         icon: const Icon(
-                          Icons.format_list_bulleted,
+                          Icons.person_add_alt_1,
                           color: Colors.black,
                           size: 18,
                         ),
-                        label: const Text.rich(
-                          TextSpan(
-                            text: "editar perfil           ",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                        label: const SizedBox(
+                          width: 120.0,
+                          child: Text.rich(
+                            TextSpan(
+                              text: "editar perfil",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),

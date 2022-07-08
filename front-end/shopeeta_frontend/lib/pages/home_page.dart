@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
   List<Product> _products = [];
   final List<Filter> _filters = [
     Filter(name: "Produto de Iniciativa", isSelected: false),
-    Filter(name: "Bizu de veterano", isSelected: false),
+    Filter(name: "Bizu de Veterano", isSelected: false),
     Filter(name: "Celulares", isSelected: false),
     Filter(name: "Eletrodomésticos", isSelected: false),
     Filter(name: "Informática", isSelected: false),

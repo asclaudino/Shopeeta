@@ -113,31 +113,29 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
             searchBarHeight: _searchBarHeight,
             context: context,
           ),
+          const SizedBox(
+            height: 30,
+          ),
           IntrinsicHeight(
             child: Row(
               children: [
-                SizedBox(
-                  width: _sideBarWidth,
-                  height: MediaQuery.of(context).size.height - _searchBarHeight,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text('Filtros'),
-                      Text('Você está logado!'),
-                    ],
-                  ),
-                ),
-                const VerticalDivider(
-                  indent: 10,
-                  endIndent: 10,
-                  width: 10,
-                  thickness: 0,
-                  color: Colors.black54,
+                Expanded(
+                  child: Container(),
                 ),
                 Container(
                   padding: const EdgeInsets.all(30),
-                  width: MediaQuery.of(context).size.width - _sideBarWidth - 10,
-                  height: MediaQuery.of(context).size.height - _searchBarHeight,
+                  width: 800.0,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 3,
+                        spreadRadius: 3,
+                        color: Colors.black.withOpacity(0.1),
+                        offset: const Offset(0, 0),
+                      ),
+                    ],
+                  ),
                   child: Form(
                     key: _formKey,
                     child: SingleChildScrollView(
@@ -180,10 +178,17 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                               price = double.parse(newValue!);
                             },
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           TextFormField(
+                            minLines: 4,
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
                             textInputAction: TextInputAction.done,
                             decoration: const InputDecoration(
-                              labelText: 'Descrição',
+                              border: OutlineInputBorder(),
+                              labelText: 'Descrição do produto',
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -202,8 +207,8 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                             height: 20,
                           ),
                           SizedBox(
-                            height: 300,
-                            width: double.infinity,
+                            height: 200,
+                            width: 200,
                             child: FileUploadWithHttp(
                               chooseFileUsingFilePicker:
                                   _chooseFileUsingFilePicker,
@@ -211,12 +216,33 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                               imageBytes: _imageBytes,
                             ),
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           if (!_productAdded)
-                            TextButton(
+                            ElevatedButton.icon(
                               onPressed: () {
                                 _registerProduct();
                               },
-                              child: const Text('Cadastrar produto'),
+                              icon: const Icon(
+                                Icons.queue,
+                                color: Colors.black,
+                                size: 18,
+                              ),
+                              label: const Text.rich(
+                                TextSpan(
+                                  text: "Cadastrar produto",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary:
+                                    Theme.of(context).colorScheme.secondary,
+                              ),
                             ),
                           if (_productAdded)
                             const Text("Produto adicionado com sucesso!"),
@@ -237,6 +263,9 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                       ),
                     ),
                   ),
+                ),
+                Expanded(
+                  child: Container(),
                 ),
               ],
             ),
