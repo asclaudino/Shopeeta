@@ -77,9 +77,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               tag: widget.product.id,
                               child: widget.imageUrl.isEmpty
                                   ? Icon(
-                                      Icons.image,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
+                                      Icons.shopping_cart,
+                                      size: 150,
+                                      color: Colors.black.withOpacity(0.2),
                                     )
                                   : InteractiveViewer(
                                       panEnabled: true,
