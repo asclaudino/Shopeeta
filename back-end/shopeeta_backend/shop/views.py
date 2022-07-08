@@ -258,8 +258,9 @@ def search_products_by_name(request):
         json_acceptable_string = s.replace("'", "\"")
         body = json.loads(json_acceptable_string)
         name = body.get('name')
-
-        products = ShopDatabase.fetch_products_by_name(name)
+        filtroiniciativa = body.get('filtroiniciativa')
+        print(filtroiniciativa)
+        products = ShopDatabase.fetch_products_by_name(name,filtroiniciativa)
         products_list = []
         for product in products:
             product_dict = product.to_json_dict()
