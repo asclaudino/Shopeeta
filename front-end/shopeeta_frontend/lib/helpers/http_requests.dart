@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:shopeeta_frontend/models/filter.dart';
 import './base_urls.dart';
 import '../models/product.dart';
 import '../models/my_tuples.dart';
 import '../models/user.dart';
+import '../models/comment.dart';
 
 class UserHttpRequestHelper {
   static const String baseBackEndUserUrl =
@@ -103,10 +104,21 @@ class ShopHttpRequestHelper {
   }
 
   static Future<Pair<List<Product>, bool>> searchProducts(
-      String toBeSearched) async {
+      String toBeSearched, List<Filter> filters) async {
+    // ---TODO: implement searchProducts with filters
+    // print('a');
+    bool filtroiniciativa = filters
+        .where((f) => f.name == "Produto de Iniciativa")
+        .first
+        .isSelected;
+
+    var stringfiltroiniciativa = filtroiniciativa ? "1" : "0";
+
     var response = await http.post(
-        Uri.parse('$baseBackEndShopUrl/search_products/'),
-        body: '{"name": "$toBeSearched"}');
+      Uri.parse('$baseBackEndShopUrl/search_products/'),
+      body:
+          '{"name": "$toBeSearched", "filtroiniciativa": "$stringfiltroiniciativa"}',
+    );
     if (json.decode(response.body)["status"] == "success") {
       var products =
           (json.decode(utf8.decode(response.bodyBytes))["products"] as List)
@@ -204,6 +216,45 @@ class ShopHttpRequestHelper {
       return Trio(imageUrl, true, "");
     } else {
       return Trio("", false, body["message"]);
+    }
+  }
+}
+
+////////////////////////////////////////////////////
+
+class CommentHttpRequestHelper {
+  static const String baseBackEndCommentUrl =
+      "${BaseUrls.baseBackEndUrl}/comment";
+
+  static Future<Pair<String, bool>> postComment(
+      Comment comment, String password) async {
+    var response = await http.post(
+        Uri.parse('$baseBackEndCommentUrl/${comment.productId}'),
+        body:
+            '{"comment" : ${comment.commentText}, "number_of_stars": ${comment.numberOfStars}, "username": "${comment.userName}", "password": "$password"}');
+
+    var body = json.decode(response.body);
+
+    if (body["status"] == "success") {
+      return Pair("", true);
+    } else {
+      return Pair(body["message"], false);
+    }
+  }
+
+  static Future<Pair<List<Comment>, bool>> getComments(int productId) async {
+    var response = await http.get(
+      Uri.parse('$baseBackEndCommentUrl/$productId'),
+    );
+
+    if (json.decode(response.body)["status"] == "success") {
+      var comments =
+          (json.decode(utf8.decode(response.bodyBytes))["products"] as List)
+              .map((i) => Comment.fromJson(i))
+              .toList();
+      return Pair(comments, true);
+    } else {
+      return Pair(List<Comment>.empty(), false);
     }
   }
 }

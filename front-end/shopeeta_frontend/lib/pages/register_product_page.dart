@@ -116,158 +116,162 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
           const SizedBox(
             height: 30,
           ),
-          IntrinsicHeight(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(30),
-                  width: 800.0,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 3,
-                        spreadRadius: 3,
-                        color: Colors.black.withOpacity(0.1),
-                        offset: const Offset(0, 0),
-                      ),
-                    ],
+          SizedBox(
+            height: MediaQuery.of(context).size.height - _searchBarHeight - 30,
+            child: SingleChildScrollView(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: Container(),
                   ),
-                  child: Form(
-                    key: _formKey,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            textInputAction: TextInputAction.next,
-                            decoration: const InputDecoration(
-                              labelText: 'Nome do produto',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Por favor, digite o nome do produto';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              name = value!;
-                            },
-                          ),
-                          TextFormField(
-                            textInputAction: TextInputAction.next,
-                            decoration: const InputDecoration(
-                              labelText: 'Preço',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Por favor, digite o preço do produto';
-                              }
-                              if (double.tryParse(value) == null) {
-                                return 'Por favor, digite um valor válido';
-                              }
-                              if (value.contains(',')) {
-                                return 'Por favor, use ponto, não vírgula';
-                              }
-                              return null;
-                            },
-                            onSaved: (newValue) {
-                              price = double.parse(newValue!);
-                            },
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            minLines: 4,
-                            maxLines: null,
-                            keyboardType: TextInputType.multiline,
-                            textInputAction: TextInputAction.done,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Descrição do produto',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Por favor, digite a descrição do produto';
-                              }
-                              return null;
-                            },
-                            onSaved: (newValue) {
-                              description = newValue!;
-                            },
-                            onFieldSubmitted: (value) {
-                              _formKey.currentState!.validate();
-                            },
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          SizedBox(
-                            height: 200,
-                            width: 200,
-                            child: FileUploadWithHttp(
-                              chooseFileUsingFilePicker:
-                                  _chooseFileUsingFilePicker,
-                              objFile: _image,
-                              imageBytes: _imageBytes,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          if (!_productAdded)
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                _registerProduct();
-                              },
-                              icon: const Icon(
-                                Icons.queue,
-                                color: Colors.black,
-                                size: 18,
+                  Container(
+                    padding: const EdgeInsets.all(30),
+                    width: 800.0,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 3,
+                          spreadRadius: 3,
+                          color: Colors.black.withOpacity(0.1),
+                          offset: const Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              textInputAction: TextInputAction.next,
+                              decoration: const InputDecoration(
+                                labelText: 'Nome do produto',
                               ),
-                              label: const Text.rich(
-                                TextSpan(
-                                  text: "Cadastrar produto",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Por favor, digite o nome do produto';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                name = value!;
+                              },
+                            ),
+                            TextFormField(
+                              textInputAction: TextInputAction.next,
+                              decoration: const InputDecoration(
+                                labelText: 'Preço',
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Por favor, digite o preço do produto';
+                                }
+                                var priceString = value.replaceAll(',', '.');
+                                if (double.tryParse(priceString) == null) {
+                                  return 'Por favor, digite um valor válido';
+                                }
+                                return null;
+                              },
+                              onSaved: (newValue) {
+                                var priceString =
+                                    newValue!.replaceAll(',', '.');
+                                price = double.parse(priceString);
+                              },
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextFormField(
+                              minLines: 4,
+                              maxLines: null,
+                              keyboardType: TextInputType.multiline,
+                              textInputAction: TextInputAction.done,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Descrição do produto',
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Por favor, digite a descrição do produto';
+                                }
+                                return null;
+                              },
+                              onSaved: (newValue) {
+                                description = newValue!;
+                              },
+                              onFieldSubmitted: (value) {
+                                _formKey.currentState!.validate();
+                              },
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              height: 200,
+                              width: 200,
+                              child: FileUploadWithHttp(
+                                chooseFileUsingFilePicker:
+                                    _chooseFileUsingFilePicker,
+                                objFile: _image,
+                                imageBytes: _imageBytes,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            if (!_productAdded)
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  _registerProduct();
+                                },
+                                icon: const Icon(
+                                  Icons.queue,
+                                  color: Colors.black,
+                                  size: 18,
+                                ),
+                                label: const Text.rich(
+                                  TextSpan(
+                                    text: "Cadastrar produto",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
+                                style: ElevatedButton.styleFrom(
+                                  primary:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
                               ),
-                              style: ElevatedButton.styleFrom(
-                                primary:
-                                    Theme.of(context).colorScheme.secondary,
+                            if (_productAdded)
+                              const Text("Produto adicionado com sucesso!"),
+                            if (_productAdded)
+                              TextButton(
+                                onPressed: () => Navigator.pushReplacementNamed(
+                                    context, MyProfilePage.pageRouteName),
+                                child: const Text("Voltar"),
                               ),
-                            ),
-                          if (_productAdded)
-                            const Text("Produto adicionado com sucesso!"),
-                          if (_productAdded)
-                            TextButton(
-                              onPressed: () => Navigator.pushReplacementNamed(
-                                  context, MyProfilePage.pageRouteName),
-                              child: const Text("Voltar"),
-                            ),
-                          if (_errorOnAdd)
-                            Text(
-                              _errorOnAddMessage,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.error,
+                            if (_errorOnAdd)
+                              Text(
+                                _errorOnAddMessage,
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Container(),
-                ),
-              ],
+                  Expanded(
+                    child: Container(),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

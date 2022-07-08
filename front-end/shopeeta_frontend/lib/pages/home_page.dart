@@ -89,6 +89,7 @@ class _HomePageState extends State<HomePage> {
             sideBarWidth: _sideBarWidth,
             searchBarHeight: _searchBarHeight,
             changeProductsParent: _changeProductsPage,
+            filters: _filters,
             isMyPage: false,
             userName: userName,
           ),

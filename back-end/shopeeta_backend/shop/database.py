@@ -43,8 +43,15 @@ class ShopDatabase:
 
 
     @staticmethod
-    def fetch_products_by_name(name):
-        products = Product.objects.filter(name__contains=name)
+    def fetch_products_by_name(name, filtroiniciativa):
+        # print(filtroiniciativa)
+        if(filtroiniciativa == '0'):
+            print('entrei no if')
+            products = Product.objects.filter(name__contains=name)
+        else:
+            print('entrei no else')
+            products = Product.objects.filter(name__contains=name, seller__is_iniciativa=True)
+        
         return products
     
     @staticmethod

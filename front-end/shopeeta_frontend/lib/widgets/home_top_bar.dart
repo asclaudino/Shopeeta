@@ -21,6 +21,12 @@ class HomeTopBar extends StatelessWidget {
       case ProfileMenuOptions.myProfile:
         Navigator.pushReplacementNamed(context, MyProfilePage.pageRouteName);
         break;
+      case ProfileMenuOptions.logout:
+        Navigator.popUntil(
+          context,
+          ModalRoute.withName('/'),
+        );
+        break;
       default:
         break;
     }
