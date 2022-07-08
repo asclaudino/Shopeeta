@@ -56,7 +56,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
     }
     if (response.success) {
       widget.changeProductsParent(response);
-      form.currentState?.reset();
+      //form.currentState?.reset();
     }
   }
 

@@ -113,6 +113,7 @@ class _HomePageState extends State<HomePage> {
                   height: MediaQuery.of(context).size.height - _searchBarHeight,
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
                           height: 30,

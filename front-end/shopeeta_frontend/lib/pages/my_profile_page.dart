@@ -98,14 +98,47 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text('Filtros'),
-                      const Text('Você está logado!'),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, RegisterProductPage.pageRouteName);
-                        },
-                        child: const Text("Adicionar Produto"),
+                      const SizedBox(
+                        height: 45,
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () => Navigator.of(context)
+                            .pushNamed(RegisterProductPage.pageRouteName),
+                        icon: const Icon(Icons.add, size: 18),
+                        label: const Text.rich(
+                          TextSpan(
+                            text: "adicionar produto",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () => Navigator.of(context)
+                            .pushNamed(RegisterProductPage.pageRouteName),
+                        icon: const Icon(
+                          Icons.format_list_bulleted,
+                          color: Colors.black,
+                          size: 18,
+                        ),
+                        label: const Text.rich(
+                          TextSpan(
+                            text: "editar perfil           ",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                        ),
                       ),
                     ],
                   ),
@@ -119,6 +152,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   height: MediaQuery.of(context).size.height - _searchBarHeight,
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
                           height: 30,
