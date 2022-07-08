@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
           button: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.black,
             fontFamily: "RobotoFamilyFont",
           ),
           bodyText1: TextStyle(

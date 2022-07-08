@@ -220,6 +220,10 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                             height: 20,
                           ),
                           if (!_productAdded)
+                            const SizedBox(
+                              height: 30,
+                            ),
+                          if (!_productAdded)
                             ElevatedButton.icon(
                               onPressed: () {
                                 _registerProduct();
@@ -245,12 +249,45 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                               ),
                             ),
                           if (_productAdded)
-                            const Text("Produto adicionado com sucesso!"),
+                            const SizedBox(
+                              height: 30,
+                              child: Text.rich(
+                                TextSpan(
+                                  text: "Produto adicionado com sucesso!\n",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
                           if (_productAdded)
-                            TextButton(
+                            ElevatedButton.icon(
                               onPressed: () => Navigator.pushReplacementNamed(
                                   context, MyProfilePage.pageRouteName),
-                              child: const Text("Voltar"),
+                              icon: const Icon(
+                                Icons.reply_sharp,
+                                color: Colors.black,
+                                size: 18,
+                              ),
+                              label: const SizedBox(
+                                width: 120.0,
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: "Retornar ao perfil",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary:
+                                    Theme.of(context).colorScheme.secondary,
+                              ),
                             ),
                           if (_errorOnAdd)
                             Text(
