@@ -44,9 +44,9 @@ class FileUploadWithHttp extends StatelessWidget {
             onPressed: () => chooseFileUsingFilePicker(),
           ),
         //------Show file name when file is selected
-        if (objFile != null) Text("File name : ${objFile!.name}"),
+        //if (objFile != null) Text("File name : ${objFile!.name}"),
         //------Show file size when file is selected
-        if (objFile != null) Text("File size : ${objFile!.size} bytes"),
+        //if (objFile != null) Text("File size : ${objFile!.size} bytes"),
       ],
     );
   }

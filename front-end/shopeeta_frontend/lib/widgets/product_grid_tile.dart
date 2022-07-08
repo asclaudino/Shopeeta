@@ -108,8 +108,9 @@ class _ProductGridTileState extends State<ProductGridTile> {
                       child: _imageUrl.isNotEmpty
                           ? _image
                           : Icon(
-                              Icons.image,
-                              color: Theme.of(context).colorScheme.primary,
+                              Icons.shopping_cart,
+                              size: 100,
+                              color: Colors.black.withOpacity(0.2),
                             ),
                     ),
                   ),

@@ -62,17 +62,26 @@ class _MyProductGridTileState extends State<MyProductGridTile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (_isLoading)
-              CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
+              Container(
+                height: 170,
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             if (!_isLoading && !_imageUrl.isNotEmpty)
-              Icon(
-                Icons.shopping_cart,
-                color: Theme.of(context).colorScheme.primary,
+              Container(
+                height: 170,
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.shopping_cart,
+                  size: 100,
+                  color: Colors.black.withOpacity(0.2),
+                ),
               ),
             if (!_isLoading && _imageUrl.isNotEmpty)
               SizedBox(
-                height: 140,
+                height: 170,
                 width: double.infinity,
                 child: Image.network(
                   _imageUrl,
